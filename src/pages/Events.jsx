@@ -11,10 +11,7 @@ const formatDate = (dateString) => {
     return new Intl.DateTimeFormat('en-US', {
       day: 'numeric',
       month: 'long',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true
+      year: 'numeric'
     }).format(date);
   } catch (error) {
     return dateString || 'TBA';
