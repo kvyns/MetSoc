@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useSheetData } from '../hooks/useSheetData'
 import { SHEET_NAMES } from '../services/sheets'
 import Loader from '../components/Loader'
+import useScrollToTop from '../hooks/useScrollToTop'
 
 // date formatter 
 const formatDate = (dateString) => {
@@ -19,6 +20,7 @@ const formatDate = (dateString) => {
 };
 
 const Events = () => {
+  useScrollToTop()
   const [selectedCategory, setSelectedCategory] = useState('all')
   const { data: events, loading, error } = useSheetData('events', 'events')
 
@@ -128,7 +130,7 @@ const Events = () => {
       <div className="max-w-7xl mx-auto">
         <motion.div 
           layout
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid md:grid-cols-3 lg:grid-cols-4 gap-6" // Changed grid and gap
         >
           <AnimatePresence mode="wait">
             {filteredEvents.map((event, index) => (
@@ -143,7 +145,7 @@ const Events = () => {
                 whileHover={{ y: -5 }}
               >
                 {/* Image Section */}
-                <div className="relative h-48 w-full overflow-hidden">
+                <div className="relative h-40 w-full overflow-hidden"> // Reduced height
                   <img 
                     src={event.ImageUrl || '/event-placeholder.jpg'} 
                     alt={event.Title}
@@ -165,8 +167,8 @@ const Events = () => {
                 </div>
 
                 {/* Content Section */}
-                <div className="p-6 flex flex-col flex-grow">
-                  <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors leading-tight text-center">
+                <div className="p-4 flex flex-col flex-grow">
+                  <h3 className="text-lg font-bold mb-2 text-white group-hover:text-cyan-400 transition-colors leading-tight text-center">
                     {event.Title || 'Untitled Event'}
                   </h3>
                   <div className="flex items-center justify-center gap-2 mb-4 text-emerald-400">
@@ -175,7 +177,7 @@ const Events = () => {
                     </svg>
                     <span className="text-base">{formatDate(event.Date)}</span>
                   </div>
-                  <p className="text-slate-300 mb-6 flex-grow leading-relaxed text-center">
+                  <p className="text-sm text-slate-300 mb-4 flex-grow leading-relaxed text-center">
                     {event.Description || 'No description available'}
                   </p>
                   

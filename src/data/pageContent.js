@@ -66,9 +66,9 @@ export const edvantageContent = {
     title: "Event Schedule"
   },
   sponsor: {
-    title: "Interested in Sponsoring?",
+    title: "Interested in Collaborating?",
     description: "Partner with us to connect with the brightest minds in metallurgy and gain premium visibility across the IIT network.",
-    buttonText: "Download Sponsorship Brochure"
+    buttonText: "Download Brochure"
   }
 };
 

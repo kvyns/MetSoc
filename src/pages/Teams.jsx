@@ -2,6 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { useSheetData } from '../hooks/useSheetData'
 import Loader from '../components/Loader'
+import useScrollToTop from '../hooks/useScrollToTop'
 
 const ROLE_ORDER = ['Faculty Advisor', 'Head', 'Coordinator', 'Developer'];
 
@@ -19,6 +20,7 @@ const EmailIcon = () => (
 );
 
 const Teams = () => {
+  useScrollToTop()
   const { data: teams, loading } = useSheetData('teams', 'teams');
 
   if (loading) return <Loader message="Loading team" />;
@@ -62,17 +64,17 @@ const Teams = () => {
 
       {/* Faculty Advisor Section */}
       {groupedTeams['Faculty Advisor'] && (
-        <div className="max-w-4xl mx-auto mb-32">
+        <div className="max-w-3xl mx-auto mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="bg-gradient-to-br from-slate-900/90 to-cyan-900/20 rounded-2xl border border-cyan-500/30 p-8 md:p-12 backdrop-blur-xl shadow-2xl"
           >
-            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+            <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="relative">
-                <div className="w-64 h-80 rounded-3xl overflow-hidden border-4 border-cyan-500/20">
+                <div className="w-48 h-64 rounded-3xl overflow-hidden border-4 border-cyan-500/20">
                   <img
-                    src={groupedTeams['Faculty Advisor'][0].ImageUrl || '/default-avatar.jpg'}
+                    src={groupedTeams['Faculty Advisor'][0].ImageUrl || '/avatar.jpg'}
                     alt="Faculty Advisor"
                     className="w-full h-full object-cover"
                   />
@@ -91,7 +93,7 @@ const Teams = () => {
               </div>
               <div className="text-center md:text-left flex-1">
                 <div className="inline-block px-4 py-1 rounded-full bg-cyan-500/20 text-cyan-400 text-sm mb-4">
-                  Faculty Advisor
+                  Faculty Advisor, MetSoc
                 </div>
                 <h2 className="text-3xl font-bold text-white mb-2">
                   {groupedTeams['Faculty Advisor'][0].Name}
@@ -143,33 +145,33 @@ const Teams = () => {
                  role === 'Coordinator' ? 'Coordinators' :
                  role === 'Developer' ? 'Developers' : role}
               </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {groupedTeams[role].map((member, index) => (
                   <motion.div
                     key={member.Name}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: index * 0.08 }}
-                    className="bg-slate-900/80 rounded-xl border border-cyan-500/20 p-6 flex flex-col items-center text-center group hover:border-cyan-500/40 transition-all"
+                    transition={{ delay: index * 0.04 }}
+                    className="bg-slate-900/80 rounded-xl border border-cyan-500/20 p-4 flex flex-col items-center text-center group hover:border-cyan-500/40 transition-all"
                     whileHover={{ y: -5 }}
                   >
-                    <div className="relative w-48 h-60 mb-6">
+                    <div className="relative w-32 h-40 mb-4">
                       <img
-                        src={member.ImageUrl || '/default-avatar.jpg'}
+                        src={member.ImageUrl || '/avatar.jpg'}
                         alt={member.Name}
-                        className="rounded-3xl object-cover w-full h-full"
+                        className="rounded-2xl object-cover w-full h-full"
                       />
                       <div className="absolute inset-0 rounded-3xl border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-colors" />
                     </div>
                     
-                    <h3 className="text-xl font-bold text-white mb-2">
+                    <h3 className="text-lg font-bold text-white mb-1">
                       {member.Name}
                     </h3>
                     {member.Position && (
-                      <p className="text-cyan-400 mb-2">{member.Position}</p>
+                      <p className="text-sm text-cyan-400 mb-1">{member.Position}</p>
                     )}
-                    <p className="text-slate-300 mb-4">{member.Department}</p>
+                    <p className="text-sm text-slate-300 mb-3">{member.Department}</p>
                     
                     {/* Social Links */}
                     <div className="flex gap-4 mt-auto">

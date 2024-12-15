@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Calendar } from 'lucide-react'
@@ -7,8 +7,11 @@ import { SHEET_NAMES } from '../services/sheets'
 import Loader from '../components/Loader'
 import { useData } from '../context/DataContext'
 import { homeContent } from '../data/pageContent'
+import useScrollToTop from '../hooks/useScrollToTop'
+import ParticlesBackground from '../components/ParticlesBackground'
 
 const Home = () => {
+  useScrollToTop()
   const [currentSlide, setCurrentSlide] = useState(0)
   const { data: updates, loading: updatesLoading } = useSheetData('updates', 'updates')
   const { data: galleryImages, loading: galleryLoading } = useSheetData('gallery', 'gallery')
@@ -63,6 +66,86 @@ const Home = () => {
     prefetchData();
   }, [fetchData]);
 
+  const particlesInit = useCallback(async engine => {
+    await loadSlim(engine);
+  }, []);
+
+  const particlesConfig = {
+    particles: {
+      number: {
+        value: 30,
+        density: {
+          enable: true,
+          value_area: 800
+        }
+      },
+      color: {
+        value: ["#22d3ee", "#34d399"]
+      },
+      shape: {
+        type: "circle"
+      },
+      opacity: {
+        value: 0.3,
+        random: true,
+        animation: {
+          enable: true,
+          speed: 1,
+          minimumValue: 0.1,
+          sync: false
+        }
+      },
+      size: {
+        value: 3,
+        random: true
+      },
+      links: {
+        enable: true,
+        distance: 150,
+        color: "#22d3ee",
+        opacity: 0.2,
+        width: 1
+      },
+      move: {
+        enable: true,
+        speed: 2,
+        direction: "none",
+        random: false,
+        straight: false,
+        outModes: {
+          default: "bounce"
+        },
+        attract: {
+          enable: true,
+          rotateX: 600,
+          rotateY: 1200
+        }
+      }
+    },
+    interactivity: {
+      detectsOn: "window",
+      events: {
+        onHover: {
+          enable: true,
+          mode: "grab"
+        },
+        resize: true
+      },
+      modes: {
+        grab: {
+          distance: 150,
+          links: {
+            opacity: 0.5
+          }
+        }
+      }
+    },
+    background: {
+      color: "transparent"
+    },
+    retina_detect: true
+  };
+
   // Show loading state only during initial load
   if (updatesLoading || galleryLoading || eventsLoading) {
     return <Loader message="Hold tight as we mold the materials into a masterpiece!" />
@@ -81,9 +164,10 @@ const Home = () => {
         animate={{ opacity: 1 }}
         className="relative h-[80vh] bg-slate-900 overflow-hidden"
       >
-        {/* background elements */}
+        {/* Interactive background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[url('/metallurgy-pattern.jpg')] opacity-20 bg-cover bg-center" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-900/50" />
+          <ParticlesBackground />
           <motion.div 
             className="absolute inset-0"
             animate={{
@@ -98,33 +182,6 @@ const Home = () => {
               repeatType: "reverse",
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-900/50" />
-        </div>
-
-        {/* floating particles */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(30)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 md:w-2 md:h-2 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                background: i % 2 ? '#22d3ee' : '#34d399',
-              }}
-              animate={{
-                y: [-20, 20],
-                x: [-20, 20],
-                scale: [0.8, 1.2],
-                opacity: [0, 0.8, 0],
-              }}
-              transition={{
-                duration: Math.random() * 5 + 3,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
         </div>
 
         {/* Content */}
@@ -504,5 +561,18 @@ const Home = () => {
     </div>
   )
 }
+
+// Add this to your global CSS file or style tag
+const styles = `
+  @keyframes float {
+    0%, 100% { transform: translateY(0); opacity: 0.2; }
+    50% { transform: translateY(-20px); opacity: 0.5; }
+  }
+`;
+
+// Add this style tag to your component
+const styleSheet = document.createElement("style");
+styleSheet.innerText = styles;
+document.head.appendChild(styleSheet);
 
 export default Home

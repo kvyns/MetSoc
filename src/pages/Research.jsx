@@ -3,8 +3,10 @@ import { motion } from 'framer-motion'
 import { useSheetData } from '../hooks/useSheetData'
 import { SHEET_NAMES } from '../services/sheets'
 import Loader from '../components/Loader'
+import useScrollToTop from '../hooks/useScrollToTop'
 
 const Research = () => {
+  useScrollToTop()
   const { data: research, loading, error } = useSheetData('research', 'research')
 
   if (loading) return <Loader message="Loading research" />
@@ -33,7 +35,7 @@ const Research = () => {
 
       {/* Research Grid */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"> {/* Updated grid to match Events */}
+        <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
           {research.map((project, index) => (
             <motion.div
               key={project.Title}
@@ -43,30 +45,31 @@ const Research = () => {
               className="group bg-slate-900/80 rounded-xl border border-cyan-500/20 shadow-xl overflow-hidden hover:border-cyan-500/40 transition-all h-full flex flex-col"
               whileHover={{ y: -5 }}
             >
-              <div className="p-8 flex flex-col h-full"> {/* Increased padding and made flex container */}
+              <div className="p-4 flex flex-col h-full">
                 <div className="flex-grow">
-                  <h3 className="text-2xl font-bold mb-6 text-white group-hover:text-cyan-400 transition-colors text-center">
+                  <h3 className="text-lg font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors text-center">
                     {project.Title}
                   </h3>
                   
-                  <div className="flex flex-wrap justify-center gap-2 mb-6">
+                  <div className="flex flex-wrap justify-center gap-1 mb-4">
                     {project.Areas?.split(',').map(area => (
                       <span 
                         key={area}
-                        className="px-4 py-1.5 rounded-full text-sm bg-cyan-500/20 text-cyan-400 backdrop-blur-sm"
+                        className="px-2 py-1 rounded-full text-xs bg-cyan-500/20 text-cyan-400 backdrop-blur-sm"
                       >
                         {area.trim()}
                       </span>
                     ))}
                   </div>
 
-                  <p className="text-slate-300 mb-8 leading-relaxed text-center">
+                  <p className="text-sm text-slate-300 mb-4 leading-relaxed text-center">
                     {project.Description}
                   </p>
                 </div>
 
+                {/* Collaborators section */}
                 {project.Collaborators && (
-                  <div className="border-t border-cyan-500/20 pt-6 mt-auto"> {/* Increased spacing */}
+                  <div className="border-t border-cyan-500/20 pt-6 mt-auto">
                     <h4 className="text-lg font-semibold text-white mb-4 text-center">Collaborators</h4>
                     <div className="flex flex-wrap justify-center gap-3">
                       {project.Collaborators.split(',').map(collab => {

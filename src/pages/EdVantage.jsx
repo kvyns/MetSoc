@@ -5,6 +5,7 @@ import { edvantageContent } from '../data/pageContent'
 import Loader from '../components/Loader'
 import { Calendar, Clock, MapPin, Users, CheckCircle, ArrowRight, Coffee, Download, Sparkles } from 'lucide-react'
 import { formatTime, formatDate, formatEventDates, formatRegistrationDeadline } from '../utils/formatters'
+import useScrollToTop from '../hooks/useScrollToTop'
 
 const EventTypes = {
   MAIN: 'main',
@@ -28,6 +29,7 @@ const EventIcons = {
 };
 
 const EdVantage = () => {
+  useScrollToTop()
   const { data: edvantageEvents, loading } = useSheetData('edvantage')
   
   const { mainEvent, scheduleByDay } = useMemo(() => {

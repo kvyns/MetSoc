@@ -1,7 +1,9 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import useScrollToTop from '../hooks/useScrollToTop'
 
 const About = () => {
+  useScrollToTop()
   const activities = [
     { title: "Technical Workshops", description: "Hands-on learning experiences with industry experts" },
     { title: "Research Projects", description: "Collaborative research opportunities for students" },
