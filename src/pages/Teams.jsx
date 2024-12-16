@@ -72,7 +72,7 @@ const Teams = () => {
           >
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="relative">
-                <div className="w-48 h-64 rounded-3xl overflow-hidden border-4 border-cyan-500/20">
+                <div className="w-48 h-64 rounded-2xl overflow-hidden border-4 border-cyan-500/20">
                   <img
                     src={groupedTeams['Faculty Advisor'][0].ImageUrl || '/avatar.jpg'}
                     alt="Faculty Advisor"
@@ -80,7 +80,7 @@ const Teams = () => {
                   />
                 </div>
                 <motion.div
-                  className="absolute inset-0 rounded-3xl"
+                  className="absolute inset-0 rounded-2xl"
                   animate={{
                     boxShadow: [
                       '0 0 20px rgba(34,211,238,0.2)',
@@ -162,7 +162,7 @@ const Teams = () => {
                         alt={member.Name}
                         className="rounded-2xl object-cover w-full h-full"
                       />
-                      <div className="absolute inset-0 rounded-3xl border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-colors" />
+                      <div className="absolute inset-0 rounded-2xl border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-colors" />
                     </div>
                     
                     <h3 className="text-lg font-bold text-white mb-1">
