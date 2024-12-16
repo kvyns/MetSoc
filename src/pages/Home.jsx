@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Calendar } from 'lucide-react'
@@ -8,37 +8,70 @@ import Loader from '../components/Loader'
 import { useData } from '../context/DataContext'
 import { homeContent } from '../data/pageContent'
 import useScrollToTop from '../hooks/useScrollToTop'
-import ParticlesBackground from '../components/ParticlesBackground'
+// import ParticlesBackground from '../components/ParticlesBackground'
 
 const Home = () => {
   useScrollToTop()
   const [currentSlide, setCurrentSlide] = useState(0)
-  const { data: updates, loading: updatesLoading } = useSheetData('updates', 'updates')
-  const { data: galleryImages, loading: galleryLoading } = useSheetData('gallery', 'gallery')
-  const { data: events, loading: eventsLoading } = useSheetData('events', 'events')
+  const [failedImages, setFailedImages] = useState(new Set())
+  
+  // Add refs to prevent multiple error logs
+  const errorLogsRef = useRef(new Set())
+
+  const { data: updates, loading: updatesLoading } = useSheetData('updates', 'updates', {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    staleTime: 300000, // 5 minutes
+    cacheTime: 3600000 // 1 hour
+  })
+  
+  const { data: galleryImages, loading: galleryLoading } = useSheetData('gallery', 'gallery', {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    staleTime: 300000,
+    cacheTime: 3600000
+  })
+  
+  const { data: events, loading: eventsLoading } = useSheetData('events', 'events', {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    staleTime: 300000,
+    cacheTime: 3600000
+  })
+
   const { fetchData } = useData();
 
-  // Update gallery image mapping
-  const images = galleryImages
-    ?.filter(item => {
-      // Convert to string and check if it's truthy
-      const isActive = String(item.active || '').toLowerCase();
-      return isActive === 'true' || isActive === '1' || isActive === 'yes';
-    })
-    ?.sort((a, b) => Number(a.order || 0) - Number(b.order || 0)) // Add fallback for order
-    ?.map(item => ({
-      url: item.imageUrl || item.url || '', // Handle both naming conventions
-      title: item.title || '',
-      description: item.description || '',
-      category: item.category || 'general',
-      date: item.date ? new Date(item.date) : new Date()
-    }))
-    .filter(item => item.url && item.url.trim() !== '') // Only include items with valid URLs
-    || [];
+  // Process images once when galleryImages changes
+  const images = React.useMemo(() => {
+    return galleryImages
+      ?.filter(item => {
+        const isActive = String(item.active || '').toLowerCase();
+        return isActive === 'true' || isActive === '1' || isActive === 'yes';
+      })
+      ?.sort((a, b) => Number(a.order || 0) - Number(b.order || 0))
+      ?.map(item => ({
+        url: item.imageUrl || item.url || '',
+        title: item.title || '',
+        description: item.description || '',
+        category: item.category || 'general',
+        date: item.date ? new Date(item.date) : new Date()
+      }))
+      .filter(item => item.url && item.url.trim() !== '' && !failedImages.has(item.url))
+      || [];
+  }, [galleryImages, failedImages]);
+
+  // Handle image errors with debouncing
+  const handleImageError = useCallback((url) => {
+    if (!errorLogsRef.current.has(url)) {
+      errorLogsRef.current.add(url);
+      console.error(`Failed to load image: ${url}`);
+      setFailedImages(prev => new Set(prev).add(url));
+    }
+  }, []);
 
   // Add debug logging to check the data structure
-  console.log('Raw Gallery Data:', galleryImages);
-  console.log('Processed Images:', images);
+  // console.log('Raw Gallery Data:', galleryImages);
+  // console.log('Processed Images:', images);
 
   // Filter EdVantage events from all events
   const edvantageEvent = events?.find(event => event.Category?.toLowerCase() === 'edvantage') || {}
@@ -66,86 +99,6 @@ const Home = () => {
     prefetchData();
   }, [fetchData]);
 
-  const particlesInit = useCallback(async engine => {
-    await loadSlim(engine);
-  }, []);
-
-  const particlesConfig = {
-    particles: {
-      number: {
-        value: 30,
-        density: {
-          enable: true,
-          value_area: 800
-        }
-      },
-      color: {
-        value: ["#22d3ee", "#34d399"]
-      },
-      shape: {
-        type: "circle"
-      },
-      opacity: {
-        value: 0.3,
-        random: true,
-        animation: {
-          enable: true,
-          speed: 1,
-          minimumValue: 0.1,
-          sync: false
-        }
-      },
-      size: {
-        value: 3,
-        random: true
-      },
-      links: {
-        enable: true,
-        distance: 150,
-        color: "#22d3ee",
-        opacity: 0.2,
-        width: 1
-      },
-      move: {
-        enable: true,
-        speed: 2,
-        direction: "none",
-        random: false,
-        straight: false,
-        outModes: {
-          default: "bounce"
-        },
-        attract: {
-          enable: true,
-          rotateX: 600,
-          rotateY: 1200
-        }
-      }
-    },
-    interactivity: {
-      detectsOn: "window",
-      events: {
-        onHover: {
-          enable: true,
-          mode: "grab"
-        },
-        resize: true
-      },
-      modes: {
-        grab: {
-          distance: 150,
-          links: {
-            opacity: 0.5
-          }
-        }
-      }
-    },
-    background: {
-      color: "transparent"
-    },
-    retina_detect: true
-  };
-
   // Show loading state only during initial load
   if (updatesLoading || galleryLoading || eventsLoading) {
     return <Loader message="Hold tight as we mold the materials into a masterpiece!" />
@@ -167,7 +120,6 @@ const Home = () => {
         {/* Interactive background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-900/50" />
-          <ParticlesBackground />
           <motion.div 
             className="absolute inset-0"
             animate={{
@@ -382,10 +334,8 @@ const Home = () => {
                         src={img.url} 
                         alt={img.title} 
                         className="max-h-full max-w-full w-auto h-auto object-contain rounded-lg"
-                        onError={(e) => {
-                          console.error(`Failed to load image: ${img.url}`);
-                          e.target.src = '/placeholder-image.jpg';
-                        }}
+                        onError={() => handleImageError(img.url)}
+                        loading="lazy" // Add lazy loading
                       />
                     </div>
 
@@ -562,17 +512,4 @@ const Home = () => {
   )
 }
 
-// Add this to your global CSS file or style tag
-const styles = `
-  @keyframes float {
-    0%, 100% { transform: translateY(0); opacity: 0.2; }
-    50% { transform: translateY(-20px); opacity: 0.5; }
-  }
-`;
-
-// Add this style tag to your component
-const styleSheet = document.createElement("style");
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);
-
-export default Home
+export default React.memo(Home) // Add memo to prevent unnecessary re-renders

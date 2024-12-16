@@ -145,7 +145,7 @@ const Events = () => {
                 whileHover={{ y: -5 }}
               >
                 {/* Image Section */}
-                <div className="relative h-40 w-full overflow-hidden"> // Reduced height
+                <div className="relative h-40 w-full overflow-hidden">
                   <img 
                     src={event.ImageUrl || '/event-placeholder.jpg'} 
                     alt={event.Title}

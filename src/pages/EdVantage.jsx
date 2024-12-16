@@ -208,105 +208,82 @@ const EdVantage = () => {
       </section>
 
       {/* Event Schedule*/}
-      <section className="py-20 bg-slate-900/50">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-16 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">
+      <section className="py-12 bg-slate-900/50">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">
             Event Schedule
           </h2>
-          <div className="grid gap-20">
+          <div className="space-y-6">
             {Object.entries(scheduleByDay).map(([date, events], dayIndex) => (
               <div key={date} className="relative">
                 {/* Date Header */}
-                <div className="sticky top-24 z-20 mb-12">
-                  <motion.div 
-                    className="bg-slate-900/95 backdrop-blur-sm rounded-xl border border-cyan-500/20 p-6 shadow-lg"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    <h3 className="text-2xl font-bold">
-                      <span className="text-cyan-400">Day {dayIndex + 1}</span>
-                      <span className="mx-3 text-slate-500">|</span>
+                <div className="sticky top-0 z-10 mb-3">
+                  <div className="bg-slate-900/95 backdrop-blur-sm rounded-lg border border-cyan-500/20 p-3">
+                    <h3 className="text-lg font-bold flex items-center gap-3">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4 text-cyan-400" />
+                        <span className="text-cyan-400">Day {dayIndex + 1}</span>
+                      </div>
+                      <span className="text-slate-500">|</span>
                       <span className="text-white">{date}</span>
                     </h3>
-                  </motion.div>
+                  </div>
                 </div>
 
-                {/* Timeline Container */}
-                <div className="relative pl-14 md:pl-16">
-                  {/* Vertical Line */}
-                  <div className="absolute left-5 md:left-6 top-0 bottom-0 w-[2px] bg-gradient-to-b from-cyan-500 via-cyan-500/50 to-transparent" />
-
-                  {events.map((event, index) => {
+                {/* Events Grid */}
+                <div className="grid gap-2 md:grid-cols-2">
+                  {events.map((event) => {
                     const typeColor = EventTypeColors[event.Type?.toLowerCase()] || EventTypeColors[EventTypes.MAIN];
                     const isBreak = event.Type?.toLowerCase() === EventTypes.BREAK;
+                    const EventIcon = EventIcons[event.Type?.toLowerCase()] || Calendar;
 
                     return (
-                      <motion.div
+                      <div
                         key={event.Title}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="relative mb-12 last:mb-0"
+                        className={`bg-slate-800/50 backdrop-blur-sm rounded-lg border 
+                          ${isBreak ? 'border-slate-700/20 md:col-span-2' : 'border-cyan-500/20'} 
+                          p-3 hover:bg-slate-800/70 transition-colors group`}
                       >
-                        {/* Timeline */}
-                        <div 
-                          className={`absolute -left-[9px] md:-left-[10px] top-8 transform -translate-y-1/2
-                            w-7 h-7 rounded-full border-2 flex items-center justify-center z-10
-                            ${isBreak 
-                              ? 'border-slate-500 bg-slate-900' 
-                              : 'border-cyan-500 bg-slate-900'
-                            }
-                          `}
-                        >
-                          {!isBreak && (
-                            <div className="w-2.5 h-2.5 rounded-full bg-cyan-500" />
-                          )}
-                        </div>
-                        
-                        {/* Event Card*/}
-                        <div 
-                          className={`bg-slate-800/50 backdrop-blur-sm rounded-xl border
-                            ${isBreak ? 'border-slate-700/20' : 'border-cyan-500/20'}
-                            p-6 md:p-8 transition-all hover:bg-slate-800/70 ml-8`}
-                        >
-                          {/* Time and Type Header */}
-                          <div className="flex flex-wrap items-center gap-3 mb-4">
-                            <div className="flex items-center gap-2">
-                              <Clock className="w-5 h-5 text-cyan-400 flex-shrink-0" />
-                              <span className="text-cyan-400 font-medium whitespace-nowrap">
-                                {formatTime(event.Time)}
-                              </span>
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1.5 bg-slate-900/50 px-2 py-1 rounded-md">
+                              <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                              <span className="text-cyan-400 text-xs font-medium">{formatTime(event.Time)}</span>
                             </div>
-                            <span className={`px-3 py-1 rounded-full text-sm ${typeColor} font-medium`}>
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${typeColor}`}>
                               {event.Type}
                             </span>
                           </div>
+                        </div>
 
-                          {/* Title and Description */}
-                          <h4 className="text-xl md:text-2xl font-bold text-white mb-4">
-                            {event.Title}
-                          </h4>
-                          <p className="text-slate-300 text-base md:text-lg leading-relaxed mb-6">
-                            {event.Description}
-                          </p>
+                        <div className="flex flex-col gap-2">
+                          <div>
+                            <h4 className="text-base font-semibold text-white group-hover:text-cyan-400 transition-colors">
+                              {event.Title}
+                            </h4>
+                            {event.Description && (
+                              <p className="text-slate-300 text-xs mt-1 leading-relaxed">
+                                {event.Description}
+                              </p>
+                            )}
+                          </div>
 
-                          {/* Event Details */}
-                          <div className="flex flex-col md:flex-row gap-4">
+                          <div className="flex flex-wrap items-center gap-3 text-xs mt-1">
                             {event.Venue && (
-                              <div className="flex items-center gap-2 text-slate-400">
-                                <MapPin className="w-5 h-5 text-cyan-400 flex-shrink-0" />
-                                <span className="text-base">{event.Venue}</span>
+                              <div className="flex items-center gap-1 text-slate-400">
+                                <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+                                <span>{event.Venue}</span>
                               </div>
                             )}
                             {event.Speakers && (
-                              <div className="flex items-center gap-2 text-slate-400">
-                                <Users className="w-5 h-5 text-cyan-400 flex-shrink-0" />
-                                <span className="text-base">{event.Speakers}</span>
+                              <div className="flex items-center gap-1 text-slate-400">
+                                <Users className="w-3.5 h-3.5 text-cyan-400" />
+                                <span>{event.Speakers}</span>
                               </div>
                             )}
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     );
                   })}
                 </div>
