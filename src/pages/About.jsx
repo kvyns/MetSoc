@@ -34,7 +34,7 @@ const About = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex justify-center items-center mt-8"
           >
-            <div className="relative w-32 h-32 md:w-40 md:h-40"> {/* reduced size */}
+            <div className="relative w-32 h-32 md:w-40 md:h-40"> 
               <motion.div
                 className="absolute inset-0 rounded-full"
                 animate={{
@@ -87,7 +87,7 @@ const About = () => {
       </div>
 
       {/* Vision & Mission */}
-      <div className="max-w-7xl mx-auto mb-24">
+      <div className="max-w-7xl mx-auto my-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

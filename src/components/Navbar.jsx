@@ -63,12 +63,12 @@ const Navbar = () => {
         {/* Mobile menu */}
         {isOpen && (
           <div className="md:hidden absolute left-0 right-0 bg-slate-900/95 border-b border-cyan-500/20">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            <div className="px-2 pt-2 pb-3 space-y-1 flex flex-col items-center">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
-                  className="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg"
+                  className="w-full text-center px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg"
                 >
                   {link.name}
                 </Link>
@@ -77,19 +77,19 @@ const Navbar = () => {
                 href={siteConfig.departmentUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg"
+                className="w-full text-center px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg"
               >
                 Department
               </a>
-              {/* <Link
+              <Link
                 to="/edvantage"
-                className="block px-3 py-2 mt-2 rounded-lg
+                className="w-full text-center px-3 py-2 mt-2 rounded-lg
                   bg-gradient-to-r from-cyan-500 to-teal-500 
                   text-white font-medium
-                  flex items-center gap-2"
+                  flex items-center justify-center gap-2"
               >
                 EdVantage
-              </Link> */}
+              </Link>
             </div>
           </div>
         )}

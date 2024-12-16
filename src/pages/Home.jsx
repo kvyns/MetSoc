@@ -145,7 +145,7 @@ const Home = () => {
             className="text-center"
           >
             <motion.h1 
-              className="text-6xl md:text-8xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400"
+              className="text-6xl md:text-8xl p-2 font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400"
             >
               {homeContent.hero.title}
             </motion.h1>
@@ -259,7 +259,7 @@ const Home = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent" />
                 <img 
-                  src="/assets/hod/hod.jpeg" 
+                  src="/assets/hod/hod.png" 
                   alt="HOD" 
                   className="w-full object-cover object-center"
                 />
