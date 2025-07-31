@@ -25,7 +25,7 @@ const team2022 = {
   FacultyAdvisor: {
     role: 'Faculty Advisor',
     name: 'Dr. Khusboo Rakha', // Update with actual name
-    image: '/public/assets/2022/facultyadvisor.jpg',
+    image: '/assets/2022/facultyadvisor.jpg',
     position: 'Faculty Advisor, MetSoc 2022-23',
     department: 'Assistant Professor, IIT Ropar', // Update with actual department
     linkedIn: 'https://www.linkedin.com/in/krakha/',
@@ -34,37 +34,37 @@ const team2022 = {
   President: {
     role: 'President',
     name: 'Harshvardhan Shewakramani',
-    image: '/public/assets/2022/president.jpg',
+    image: '/assets/2022/president.jpg',
     linkedIn: 'https://www.linkedin.com/in/harshvardhan-shewakramani/',
     children: [
       {
         role: 'Chair, Research and Technical Content',
         name: 'Atul Pandey',
-        image: '/public/assets/2022/chair.png',
+        image: '/assets/2022/chair.png',
         linkedIn: 'https://www.linkedin.com/in/atul-pandey-173722161/',
         children: [
           {
             role: 'Secretary',
             name: 'Suyash Varshney',
-            image: '/public/assets/2022/secretary.jpg',
+            image: '/assets/2022/secretary.jpg',
             linkedIn: 'https://www.linkedin.com/in/suyash-varshney-0a2428234/',
             children: [
               {
                 role: 'Treasurer',
                 name: 'Srivatsa Kaustubh Dussa',
-                image: '/public/assets/2022/treasurer.jpg',
+                image: '/assets/2022/treasurer.jpg',
                 linkedIn: 'https://www.linkedin.com/in/kaustubh1010',
                 children: [
                   {
                     role: 'Joint Secretary',
                     name: 'Anshul Chamoli',
-                    image: '/public/assets/2022/jointsec2.jpg',
+                    image: '/assets/2022/jointsec2.jpg',
                     linkedIn: 'https://www.linkedin.com/in/anshul-chamoli-32614a227',
                     children: [
                       {
                         role: 'Joint Secretary',
                         name: 'Tanvi Singhal',
-                        image: 'public/avatar.jpg',
+                        image: '/avatar.jpg',
                         linkedIn: '',
                       },
                     ],
