@@ -118,9 +118,9 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Call Us",
-      content: "+91 8770418102",
+      content: "+91 8619585751",
       subtext: "Mon-Fri 9am to 6pm",
-      link: "tel:+918770418102"
+      link: "tel:+918619585751"
     }
   ]
 
