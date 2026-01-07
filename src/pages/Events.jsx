@@ -55,7 +55,7 @@ const Events = () => {
   if (!events || events.length === 0) {
     return (
       <div className="min-h-screen pt-24 flex flex-col items-center justify-center">
-        <div className="text-cyan-400 mb-4">No events found</div>
+        <div className="text-orange-400 mb-4">No events found</div>
         <div className="text-slate-400 text-sm">
           Data received: {JSON.stringify(events, null, 2)}
         </div>
@@ -75,11 +75,11 @@ const Events = () => {
           <motion.div
             initial={{ y: -20 }}
             animate={{ y: 0 }}
-            className="inline-block mb-8 px-6 py-2 mt-8 rounded-full bg-cyan-500/10 border border-cyan-500/20"
+            className="inline-block mb-8 px-6 py-2 mt-8 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/30"
           >
-            <span className="text-cyan-400">Stay Updated</span>
+            <span className="text-orange-400">Stay Updated</span>
           </motion.div>
-          <h1 className="text-6xl md:text-7xl font-bold mb-8 py-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 h-auto">
+          <h1 className="text-6xl md:text-7xl font-bold mb-8 py-8 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400 h-auto">
             Upcoming Events
           </h1>
           <p className="text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
@@ -89,7 +89,7 @@ const Events = () => {
         
         {/* Background decoration */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-orange-500/5 to-transparent" />
           <motion.div
             animate={{
               opacity: [0.5, 0.8, 0.5],
@@ -100,7 +100,7 @@ const Events = () => {
               repeat: Infinity,
               ease: "easeInOut"
             }}
-            className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-emerald-500/5"
+            className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-violet-500/5"
           />
         </div>
       </div>
@@ -114,8 +114,8 @@ const Events = () => {
               onClick={() => setSelectedCategory(category)}
               className={`px-6 py-2 rounded-full border ${
                 selectedCategory.toLowerCase() === (category || 'all').toLowerCase()
-                  ? 'bg-cyan-500 border-transparent text-white'
-                  : 'border-cyan-500/20 text-slate-300 hover:bg-cyan-500/10'
+                  ? 'bg-gradient-to-r from-orange-500 to-amber-500 border-transparent text-white'
+                  : 'border-orange-500/30 text-slate-300 hover:bg-orange-500/10'
               } transition-all capitalize`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -141,7 +141,7 @@ const Events = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ delay: index * 0.1 }}
-                className="group bg-slate-900/80 rounded-xl border border-cyan-500/20 shadow-xl backdrop-blur-xl hover:border-cyan-500/40 transition-all flex flex-col h-full overflow-hidden"
+                className="group bg-slate-900/80 rounded-xl border-2 border-orange-500/30 shadow-xl backdrop-blur-xl hover:border-orange-500/50 transition-all flex flex-col h-full overflow-hidden"
                 whileHover={{ y: -5 }}
               >
                 {/* Image Section */}
@@ -157,9 +157,9 @@ const Events = () => {
                   {/*category badge*/}
                   <div className="absolute bottom-4 left-0 right-0 flex justify-center z-10">
                     <span className={`px-4 py-1.5 rounded-full text-sm font-medium backdrop-blur-sm ${
-                      event.Category?.toLowerCase() === 'technical' ? 'bg-cyan-500/30 text-cyan-300 border border-cyan-500/50' :
-                      event.Category?.toLowerCase() === 'workshop' ? 'bg-emerald-500/30 text-emerald-300 border border-emerald-500/50' :
-                      'bg-teal-500/30 text-teal-300 border border-teal-500/50'
+                      event.Category?.toLowerCase() === 'technical' ? 'bg-orange-500/30 text-orange-300 border border-orange-500/50' :
+                      event.Category?.toLowerCase() === 'workshop' ? 'bg-violet-500/30 text-violet-300 border border-violet-500/50' :
+                      'bg-amber-500/30 text-amber-300 border border-amber-500/50'
                     }`}>
                       {event.Category || 'Uncategorized'}
                     </span>
@@ -168,10 +168,10 @@ const Events = () => {
 
                 {/* Content Section */}
                 <div className="p-4 flex flex-col flex-grow">
-                  <h3 className="text-lg font-bold mb-2 text-white group-hover:text-cyan-400 transition-colors leading-tight text-center">
+                  <h3 className="text-lg font-bold mb-2 text-white group-hover:text-orange-400 transition-colors leading-tight text-center">
                     {event.Title || 'Untitled Event'}
                   </h3>
-                  <div className="flex items-center justify-center gap-2 mb-4 text-emerald-400">
+                  <div className="flex items-center justify-center gap-2 mb-4 text-orange-400">
                     <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
@@ -182,7 +182,7 @@ const Events = () => {
                   </p>
                   
                   {/* Footer */}
-                  <div className="flex items-center justify-between pt-4 border-t border-cyan-500/10 mt-auto">
+                  <div className="flex items-center justify-between pt-4 border-t border-orange-500/20 mt-auto">
                     <div className="flex items-center gap-2 text-slate-400">
                       <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -195,7 +195,7 @@ const Events = () => {
                         href={event.RegisterLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-cyan-400 hover:text-cyan-300 transition-colors whitespace-nowrap"
+                        className="text-orange-400 hover:text-orange-300 transition-colors whitespace-nowrap"
                       >
                         Register →
                       </a>

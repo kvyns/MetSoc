@@ -23,11 +23,11 @@ const Research = () => {
           <motion.div
             initial={{ y: -20 }}
             animate={{ y: 0 }}
-            className="inline-block mb-8 px-6 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20"
+            className="inline-block mb-8 px-6 py-2 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/30"
           >
-            <span className="text-cyan-400">Our Research</span>
+            <span className="text-orange-400">Our Research</span>
           </motion.div>
-          <h1 className="text-6xl md:text-7xl py-4 font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400">
+          <h1 className="text-6xl md:text-7xl py-4 font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400">
             Research Projects
           </h1>
         </motion.div>
@@ -42,12 +42,12 @@ const Research = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="group bg-slate-900/80 rounded-xl border border-cyan-500/20 shadow-xl overflow-hidden hover:border-cyan-500/40 transition-all h-full flex flex-col"
+              className="group bg-slate-900/80 rounded-xl border-2 border-orange-500/30 shadow-xl overflow-hidden hover:border-orange-500/50 transition-all h-full flex flex-col"
               whileHover={{ y: -5 }}
             >
               <div className="p-4 flex flex-col h-full">
                 <div className="flex-grow">
-                  <h3 className="text-lg font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors text-center">
+                  <h3 className="text-lg font-bold mb-4 text-white group-hover:text-orange-400 transition-colors text-center">
                     {project.Title}
                   </h3>
                   
@@ -55,7 +55,7 @@ const Research = () => {
                     {project.Areas?.split(',').map(area => (
                       <span 
                         key={area}
-                        className="px-2 py-1 rounded-full text-xs bg-cyan-500/20 text-cyan-400 backdrop-blur-sm"
+                        className="px-2 py-1 rounded-full text-xs bg-gradient-to-r from-orange-500/20 to-amber-500/20 text-orange-400 backdrop-blur-sm border border-orange-500/30"
                       >
                         {area.trim()}
                       </span>
@@ -69,7 +69,7 @@ const Research = () => {
 
                 {/* Collaborators section */}
                 {project.Collaborators && (
-                  <div className="border-t border-cyan-500/20 pt-6 mt-auto">
+                  <div className="border-t border-orange-500/20 pt-6 mt-auto">
                     <h4 className="text-lg font-semibold text-white mb-4 text-center">Collaborators</h4>
                     <div className="flex flex-wrap justify-center gap-3">
                       {project.Collaborators.split(',').map(collab => {
@@ -80,7 +80,7 @@ const Research = () => {
                             href={link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-4 py-1.5 bg-slate-800/50 rounded-full text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-2 text-sm backdrop-blur-sm hover:bg-slate-800/70"
+                            className="px-4 py-1.5 bg-slate-800/50 rounded-full text-orange-400 hover:text-orange-300 transition-colors flex items-center gap-2 text-sm backdrop-blur-sm hover:bg-slate-800/70"
                           >
                             {name}
                             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

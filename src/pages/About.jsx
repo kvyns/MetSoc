@@ -23,9 +23,10 @@ const About = () => {
           <motion.div
             initial={{ y: -20 }}
             animate={{ y: 0 }}
-            className="inline-block px-6 mt-8 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20"
+            className="inline-block px-6 mt-8 py-2 rounded-full bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/30"
+            whileHover={{ scale: 1.05 }}
           >
-            <span className="text-cyan-400">Established 2021</span>
+            <span className="text-orange-400 font-semibold">✨ Established 2021</span>
           </motion.div>
           {/* Logo Section*/}
           <motion.div
@@ -39,14 +40,14 @@ const About = () => {
                 className="absolute inset-0 rounded-full"
                 animate={{
                   boxShadow: [
-                    '0 0 20px rgba(34,211,238,0.2)',
-                    '0 0 40px rgba(34,211,238,0.4)',
-                    '0 0 20px rgba(34,211,238,0.2)',
+                    '0 0 20px rgba(249,115,22,0.2)',
+                    '0 0 40px rgba(249,115,22,0.4)',
+                    '0 0 20px rgba(249,115,22,0.2)',
                   ],
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
-              <div className="w-full h-full rounded-full overflow-hidden border-4 border-cyan-500/20">
+              <div className="w-full h-full rounded-full overflow-hidden border-4 border-orange-500/20">
                 <img 
                   src="/assets/logo/metsoc-logo.png"
                   alt="MetSoc Logo"
@@ -55,7 +56,7 @@ const About = () => {
               </div>
             </div>
           </motion.div>
-          <h1 className="text-6xl md:text-7xl p-2 font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400">
+          <h1 className="text-6xl md:text-7xl p-2 font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400">
             About MetSoc
           </h1>
           <motion.p 
@@ -70,7 +71,7 @@ const About = () => {
         </motion.div>
         {/* Background decoration */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-orange-500/5 to-transparent" />
           <motion.div
             animate={{
               opacity: [0.5, 0.8, 0.5],
@@ -81,7 +82,7 @@ const About = () => {
               repeat: Infinity,
               ease: "easeInOut"
             }}
-            className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-emerald-500/5"
+            className="absolute inset-0 bg-gradient-to-r from-violet-500/5 to-pink-500/5"
           />
         </div>
       </div>
@@ -94,39 +95,53 @@ const About = () => {
           viewport={{ once: true }}
           className="grid md:grid-cols-2 gap-12"
         >
-          <div className="bg-slate-900/80 p-8 rounded-xl border border-cyan-500/20 shadow-xl backdrop-blur-xl flex flex-col items-center text-center h-full">
+          <motion.div 
+            className="bg-slate-900/80 p-8 rounded-xl border-2 border-orange-500/30 shadow-xl backdrop-blur-xl flex flex-col items-center text-center h-full"
+            whileHover={{ y: -5, borderColor: 'rgba(249,115,22,0.5)' }}
+          >
             <div className="flex-1 flex flex-col items-center justify-center">
               <div className="mb-8">
-                <span className="inline-block p-3 rounded-lg bg-cyan-500/10 mb-4">
-                  <svg className="w-8 h-8 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <motion.span 
+                  className="inline-block p-3 rounded-lg bg-gradient-to-br from-orange-500/20 to-amber-500/20"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <svg className="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
-                </span>
-                <h2 className="text-2xl font-bold text-cyan-400">Our Vision</h2>
+                </motion.span>
+                <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">Our Vision</h2>
               </div>
               <p className="text-lg text-slate-300 leading-relaxed max-w-lg">
                 To become a leading student organization in the field of metallurgy and materials 
                 science, fostering innovation and research excellence.
               </p>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-slate-900/80 p-8 rounded-xl border border-cyan-500/20 shadow-xl backdrop-blur-xl flex flex-col items-center text-center h-full">
+          <motion.div 
+            className="bg-slate-900/80 p-8 rounded-xl border-2 border-violet-500/30 shadow-xl backdrop-blur-xl flex flex-col items-center text-center h-full"
+            whileHover={{ y: -5, borderColor: 'rgba(139,92,246,0.5)' }}
+          >
             <div className="flex-1 flex flex-col items-center justify-center">
               <div className="mb-8">
-                <span className="inline-block p-3 rounded-lg bg-emerald-500/10 mb-4">
-                  <svg className="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <motion.span 
+                  className="inline-block p-3 rounded-lg bg-gradient-to-br from-violet-500/20 to-purple-500/20"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <svg className="w-8 h-8 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
                   </svg>
-                </span>
-                <h2 className="text-2xl font-bold text-emerald-400">Our Mission</h2>
+                </motion.span>
+                <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-purple-400">Our Mission</h2>
               </div>
               <p className="text-lg text-slate-300 leading-relaxed max-w-lg">
                 To create a vibrant community of future metallurgists and materials scientists through 
                 hands-on learning, research, and industry collaboration.
               </p>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
 
@@ -137,7 +152,7 @@ const About = () => {
         viewport={{ once: true }}
         className="max-w-7xl mx-auto"
       >
-        <h2 className="text-3xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">
+        <h2 className="text-4xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400">
           What We Do
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -148,10 +163,10 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-slate-900/80 p-6 rounded-xl border border-cyan-500/20 shadow-xl backdrop-blur-xl"
-              whileHover={{ scale: 1.02 }}
+              className="bg-slate-900/80 p-6 rounded-xl border-2 border-orange-500/30 shadow-xl backdrop-blur-xl"
+              whileHover={{ scale: 1.05, y: -5, borderColor: 'rgba(249,115,22,0.5)' }}
             >
-              <h3 className="text-xl font-bold mb-3 text-cyan-400">{activity.title}</h3>
+              <h3 className="text-xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">{activity.title}</h3>
               <p className="text-slate-300">{activity.description}</p>
             </motion.div>
           ))}

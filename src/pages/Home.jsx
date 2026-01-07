@@ -124,8 +124,8 @@ const Home = () => {
             className="absolute inset-0"
             animate={{
               background: [
-                'linear-gradient(to right, rgba(6,182,212,0.1), rgba(16,185,129,0.1))',
-                'linear-gradient(to right, rgba(16,185,129,0.1), rgba(6,182,212,0.1))',
+                'linear-gradient(to right, rgba(249,115,22,0.1), rgba(139,92,246,0.1))',
+                'linear-gradient(to right, rgba(139,92,246,0.1), rgba(249,115,22,0.1))',
               ],
             }}
             transition={{
@@ -145,7 +145,7 @@ const Home = () => {
             className="text-center"
           >
             <motion.h1 
-              className="text-6xl md:text-8xl p-2 font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400"
+              className="text-6xl md:text-8xl p-2 font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400"
             >
               {homeContent.hero.title}
             </motion.h1>
@@ -171,9 +171,9 @@ const Home = () => {
                   to={button.link}
                   className={`px-6 py-3 ${
                     button.link === "/about"
-                      ? "bg-cyan-500 hover:bg-cyan-600 text-white"
-                      : "border border-cyan-500 text-cyan-400 hover:bg-cyan-500/10"
-                  } rounded-lg transition-colors`}
+                      ? "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white"
+                      : "border-2 border-orange-500 text-orange-400 hover:bg-orange-500/10"
+                  } rounded-lg transition-all font-semibold`}
                 >
                   {button.text}
                 </Link>
@@ -188,50 +188,115 @@ const Home = () => {
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         >
-          <div className="w-6 h-10 border-2 border-cyan-400 rounded-full relative">
-            <div className="w-1 h-2 bg-cyan-400 rounded-full absolute left-1/2 top-2 -translate-x-1/2" />
+          <div className="w-6 h-10 border-2 border-orange-400 rounded-full relative">
+            <div className="w-1 h-2 bg-orange-400 rounded-full absolute left-1/2 top-2 -translate-x-1/2" />
           </div>
         </motion.div>
       </motion.div>
 
       {/* EdVantage Section*/}
-      <section className="py-24 mt-10 bg-slate-900/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-transparent" />
-        <div className="max-w-7xl mx-auto px-4 relative">
+      <section className="py-24 mt-10 relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 pointer-events-none">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            className="absolute top-20 right-10 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{ duration: 8, repeat: Infinity }}
+          />
+          <motion.div
+            className="absolute bottom-20 left-10 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl"
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{ duration: 10, repeat: Infinity }}
+          />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col items-center text-center"
+            transition={{ duration: 0.8 }}
+            className="text-center"
           >
-            <span className="inline-block px-4 py-1 rounded-full text-sm bg-cyan-500/20 text-cyan-400 mb-6">
-              {homeContent.edvantage.badge}
-            </span>
-            <h2 className="text-4xl py-4 md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400 mb-6">
-              {homeContent.edvantage.title}
-            </h2>
-            <p className="text-xl text-slate-300 leading-relaxed max-w-2xl mb-8">
+            <motion.span 
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-orange-500/20 to-amber-500/20 text-orange-400 border border-orange-500/30 mb-6"
+              whileHover={{ scale: 1.05 }}
+            >
+              ✨ {homeContent.edvantage.badge}
+            </motion.span>
+            
+            <motion.h2 
+              className="text-5xl md:text-6xl py-4 font-black mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400">
+                EdVantage
+              </span>
+              {' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400">
+                2026
+              </span>
+            </motion.h2>
+            
+            <motion.p 
+              className="text-xl text-slate-300 leading-relaxed max-w-2xl mx-auto mb-10"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+            >
               {homeContent.edvantage.description}
-            </p>
-            <div className="flex flex-col items-center gap-4 mb-8">
-              <div className="flex items-center gap-3 text-slate-300">
-                <Calendar className="w-5 h-5 text-cyan-400" />
-                <span>Jan 24-25, 2025</span>
-              </div>
+            </motion.p>
+            
+            <motion.div 
+              className="flex flex-col items-center gap-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+            >
+              <motion.div 
+                className="flex items-center gap-4 px-6 py-3 rounded-2xl bg-gradient-to-r from-slate-800/80 to-slate-900/80 border-2 border-orange-500/30 backdrop-blur-sm"
+                whileHover={{ scale: 1.05, borderColor: 'rgba(249,115,22,0.5)' }}
+              >
+                <div className="p-2 rounded-lg bg-orange-500/20">
+                  <Calendar className="w-6 h-6 text-orange-400" />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs text-slate-400 font-medium">Event Dates</p>
+                  <p className="text-white font-bold text-lg">Jan 16-17, 2026</p>
+                </div>
+              </motion.div>
+              
               <Link 
                 to="/edvantage"
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-lg hover:opacity-90 transition-all"
+                className="group relative inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl font-bold text-lg overflow-hidden shadow-xl shadow-orange-500/30"
               >
-                Learn More
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500"
+                  initial={{ x: '-100%' }}
+                  whileHover={{ x: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+                <span className="relative z-10">Explore EdVantage</span>
                 <motion.span 
-                  className="ml-2"
-                  animate={{ x: [0, 4, 0] }}
+                  className="relative z-10"
+                  animate={{ x: [0, 5, 0] }}
                   transition={{ repeat: Infinity, duration: 1.5 }}
                 >
                   →
                 </motion.span>
               </Link>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -246,8 +311,8 @@ const Home = () => {
       >
         {/* Background decoration */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-transparent" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-from)_0%,_var(--tw-gradient-to)_100%)] from-cyan-500/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-orange-500/5 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-from)_0%,_var(--tw-gradient-to)_100%)] from-violet-500/10 to-transparent" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 relative">
@@ -265,16 +330,16 @@ const Home = () => {
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <h3 className="text-lg font-semibold text-white mb-1">Dr. Pratik Ray</h3>
-                  <p className="text-cyan-400 text-sm">Head of Department - MME</p>
+                  <p className="text-orange-400 text-sm">Head of Department - MME</p>
                 </div>
               </motion.div>
             </div>
 
             <div className="md:col-span-2 space-y-6">
-              <div className="inline-block px-4 py-1 rounded-full text-sm bg-cyan-500/20 text-cyan-400 mb-4">
+              <div className="inline-block px-4 py-1 rounded-full text-sm bg-gradient-to-r from-orange-500/20 to-amber-500/20 text-orange-400 border border-orange-500/30 mb-4">
                 Message from HOD
               </div>
-              <h2 className="text-3xl py-1 font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">
+              <h2 className="text-3xl py-1 font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">
                 Shaping the Future of Materials Science
               </h2>
               <div className="space-y-4">
@@ -290,7 +355,7 @@ const Home = () => {
                 </p>
               </div>
               <div className="pt-6 flex items-center gap-4">
-                <div className="h-1 w-20 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full" />
+                <div className="h-1 w-20 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full" />
                 <span className="text-slate-400 italic">Head of Department</span>
               </div>
             </div>
@@ -301,7 +366,7 @@ const Home = () => {
       {/* Photo Carousel */}
       <section className="py-20 bg-slate-900/30">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-2 text-center text-cyan-400">Gallery</h2>
+          <h2 className="text-3xl font-bold mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">Gallery</h2>
           {images.length > 0 ? (
             <div className="relative bg-slate-900/50 rounded-xl overflow-hidden min-h-[400px]">
               {/* Navigation dots at top */}
@@ -311,7 +376,7 @@ const Home = () => {
                     key={index}
                     className={`w-2 h-2 rounded-full transition-all ${
                       index === currentSlide 
-                        ? 'bg-cyan-400 w-6' 
+                        ? 'bg-orange-400 w-6' 
                         : 'bg-slate-400/50 hover:bg-slate-400/80'
                     }`}
                     onClick={() => setCurrentSlide(index)}
@@ -340,7 +405,7 @@ const Home = () => {
                     </div>
 
                     {/* Caption Section*/}
-                    <div className="bg-slate-900/95 border-t border-cyan-500/20">
+                    <div className="bg-slate-900/95 border-t border-orange-500/20">
                       <div className="py-3 px-6">
                         <div className="max-w-3xl mx-auto text-center">
                           <motion.h3 
@@ -364,7 +429,7 @@ const Home = () => {
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               transition={{ delay: 0.4 }}
-                              className="inline-block mt-2 px-3 py-1 bg-cyan-500/10 text-cyan-400 text-sm rounded-full"
+                              className="inline-block mt-2 px-3 py-1 bg-gradient-to-r from-orange-500/20 to-amber-500/20 text-orange-400 text-sm rounded-full border border-orange-500/30"
                             >
                               {img.category}
                             </motion.span>
@@ -387,7 +452,7 @@ const Home = () => {
       {/* Latest Updates */}
       <section className="py-20 bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-12 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">
+          <h2 className="text-3xl font-bold mb-12 text-center text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400">
             Latest Updates
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -402,7 +467,7 @@ const Home = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
-                  className="group bg-slate-900/80 rounded-xl border border-cyan-500/20 shadow-xl overflow-hidden flex flex-col h-full"
+                  className="group bg-slate-900/80 rounded-xl border-2 border-orange-500/30 shadow-xl overflow-hidden flex flex-col h-full hover:border-orange-500/50 transition-colors"
                 >
                   {update.ImageUrl && (
                     <div className="relative w-full h-48 overflow-hidden bg-slate-800">
@@ -419,7 +484,7 @@ const Home = () => {
                   
                   <div className="p-6 flex-1 flex flex-col">
                     <div className="flex items-center gap-2 mb-4">
-                      <span className="px-3 py-1 rounded-full text-sm bg-cyan-500/20 text-cyan-400">
+                      <span className="px-3 py-1 rounded-full text-sm bg-gradient-to-r from-orange-500/20 to-amber-500/20 text-orange-400 border border-orange-500/30">
                         {update.Category || 'News'}
                       </span>
                       <span className="text-slate-400 text-sm">
@@ -430,7 +495,7 @@ const Home = () => {
                       </span>
                     </div>
 
-                    <h3 className="text-xl font-bold mb-3 text-white group-hover:text-cyan-400 transition-colors">
+                    <h3 className="text-xl font-bold mb-3 text-white group-hover:text-orange-400 transition-colors">
                       {update.Title}
                     </h3>
                     
@@ -439,12 +504,12 @@ const Home = () => {
                     </p>
 
                     {update.Link && (
-                      <div className="pt-4 border-t border-cyan-500/10">
+                      <div className="pt-4 border-t border-orange-500/20">
                         <a 
                           href={update.Link}
                           target="_blank"
                           rel="noopener noreferrer" 
-                          className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-all group-hover:gap-3"
+                          className="inline-flex items-center gap-2 text-orange-400 hover:text-orange-300 transition-all group-hover:gap-3"
                         >
                           Read full article
                           <svg 
@@ -477,7 +542,7 @@ const Home = () => {
           >
             <Link
               to="/updates"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-cyan-500/20 text-cyan-400 hover:bg-cyan-500/10 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border-2 border-orange-500/30 text-orange-400 hover:bg-orange-500/10 transition-all font-semibold"
             >
               View All Updates
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -501,7 +566,7 @@ const Home = () => {
                 transition={{ delay: index * 0.1 }}
                 className="text-center"
               >
-                <h3 className="text-4xl font-bold text-cyan-400">{stat.number}</h3>
+                <h3 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">{stat.number}</h3>
                 <p className="text-slate-300">{stat.label}</p>
               </motion.div>
             ))}

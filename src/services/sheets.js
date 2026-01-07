@@ -6,6 +6,7 @@ export const SHEET_NAMES = {
   gallery: 'Gallery',
   research: 'Research',
   teams: 'Teams',
+  teams2024: 'Teams 2024-25',
   edvantage: 'EdVantage'
 };
 

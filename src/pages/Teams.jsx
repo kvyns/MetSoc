@@ -106,10 +106,23 @@ const Teams = () => {
   useScrollToTop();
   const [tab, setTab] = useState('current');
   const { data: teams, loading } = useSheetData('teams', 'teams');
+  const { data: teams2024, loading: loading2024 } = useSheetData('teams2024', 'teams2024');
 
-  if (loading) return <Loader message="Loading team" />;
+  if (loading || loading2024) return <Loader message="Loading team" />;
 
   const groupedTeams = teams.reduce((acc, member) => {
+    const role = member.Role?.trim();
+    if (!acc[role]) {
+      acc[role] = [];
+    }
+    const existingMember = acc[role].find(m => m.Name === member.Name);
+    if (!existingMember) {
+      acc[role].push(member);
+    }
+    return acc;
+  }, {});
+
+  const groupedTeams2024 = teams2024.reduce((acc, member) => {
     const role = member.Role?.trim();
     if (!acc[role]) {
       acc[role] = [];
@@ -126,13 +139,19 @@ const Teams = () => {
       {/* Tabs */}
       <div className="flex justify-center mb-12 gap-4">
         <button
-          className={`px-6 py-2 rounded-full font-semibold border transition-colors ${tab === 'current' ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300' : 'bg-slate-900/40 border-slate-700 text-white'}`}
+          className={`px-6 py-2 rounded-full font-semibold border transition-colors ${tab === 'current' ? 'bg-gradient-to-r from-orange-500 to-amber-500 border-transparent text-white' : 'bg-slate-900/40 border-orange-500/30 text-white hover:bg-orange-500/10'}`}
           onClick={() => setTab('current')}
         >
           Current Team
         </button>
         <button
-          className={`px-6 py-2 rounded-full font-semibold border transition-colors ${tab === '2022' ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300' : 'bg-slate-900/40 border-slate-700 text-white'}`}
+          className={`px-6 py-2 rounded-full font-semibold border transition-colors ${tab === '2024' ? 'bg-gradient-to-r from-orange-500 to-amber-500 border-transparent text-white' : 'bg-slate-900/40 border-orange-500/30 text-white hover:bg-orange-500/10'}`}
+          onClick={() => setTab('2024')}
+        >
+          MetSoc Team 2024-25
+        </button>
+        <button
+          className={`px-6 py-2 rounded-full font-semibold border transition-colors ${tab === '2022' ? 'bg-gradient-to-r from-orange-500 to-amber-500 border-transparent text-white' : 'bg-slate-900/40 border-orange-500/30 text-white hover:bg-orange-500/10'}`}
           onClick={() => setTab('2022')}
         >
           MetSoc Team 2022-23
@@ -141,7 +160,6 @@ const Teams = () => {
 
       {tab === 'current' ? (
         <>
-          {/* ...existing code... (current team UI) */}
           {/* Hero Section */}
           <div className="relative mb-24">
             <motion.div
@@ -152,27 +170,26 @@ const Teams = () => {
               <motion.div
                 initial={{ y: -20 }}
                 animate={{ y: 0 }}
-                className="inline-block mb-8 px-6 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20"
+                className="inline-block mb-8 px-6 py-2 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/30"
               >
-                <span className="text-cyan-400">Our Team</span>
+                <span className="text-orange-400">Our Team</span>
               </motion.div>
-              <h1 className="text-6xl md:text-7xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400">
+              <h1 className="text-6xl md:text-7xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400">
                 Meet The Team
               </h1>
             </motion.div>
           </div>
-          {/* ...existing code... (current team UI) */}
           {/* Faculty Advisor Section */}
           {groupedTeams['Faculty Advisor'] && (
             <div className="max-w-3xl mx-auto mb-20">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-gradient-to-br from-slate-900/90 to-cyan-900/20 rounded-2xl border border-cyan-500/30 p-8 md:p-12 backdrop-blur-xl shadow-2xl"
+                className="bg-gradient-to-br from-slate-900/90 to-orange-900/20 rounded-2xl border-2 border-orange-500/30 p-8 md:p-12 backdrop-blur-xl shadow-2xl"
               >
                 <div className="flex flex-col md:flex-row items-center gap-6">
                   <div className="relative">
-                    <div className="w-48 h-64 rounded-2xl overflow-hidden border-4 border-cyan-500/20">
+                    <div className="w-48 h-64 rounded-2xl overflow-hidden border-4 border-orange-500/20">
                       <img
                         src={groupedTeams['Faculty Advisor'][0].ImageUrl || '/avatar.jpg'}
                         alt="Faculty Advisor"
@@ -183,27 +200,27 @@ const Teams = () => {
                       className="absolute inset-0 rounded-2xl"
                       animate={{
                         boxShadow: [
-                          '0 0 20px rgba(34,211,238,0.2)',
-                          '0 0 40px rgba(34,211,238,0.4)',
-                          '0 0 20px rgba(34,211,238,0.2)',
+                          '0 0 20px rgba(249,115,22,0.2)',
+                          '0 0 40px rgba(249,115,22,0.4)',
+                          '0 0 20px rgba(249,115,22,0.2)',
                         ],
                       }}
                       transition={{ duration: 2, repeat: Infinity }}
                     />
                   </div>
                   <div className="text-center md:text-left flex-1">
-                    <div className="inline-block px-4 py-1 rounded-full bg-cyan-500/20 text-cyan-400 text-sm mb-4">
+                    <div className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/20 text-orange-400 text-sm mb-4 border border-orange-500/30">
                       Faculty Advisor, MetSoc
                     </div>
                     <h2 className="text-3xl font-bold text-white mb-2">
                       {groupedTeams['Faculty Advisor'][0].Name}
                     </h2>
                     {groupedTeams['Faculty Advisor'][0].Position && (
-                      <p className="text-cyan-400 mb-2">
+                      <p className="text-orange-400 mb-2">
                         {groupedTeams['Faculty Advisor'][0].Position}
                       </p>
                     )}
-                    <p className="text-xl text-cyan-300 mb-6">
+                    <p className="text-xl text-amber-300 mb-6">
                       {groupedTeams['Faculty Advisor'][0].Department}
                     </p>
                     <div className="flex gap-4 justify-center md:justify-start">
@@ -212,7 +229,7 @@ const Teams = () => {
                           href={groupedTeams['Faculty Advisor'][0].LinkedIn}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 bg-cyan-500/20 rounded-full text-cyan-400 hover:bg-cyan-500/30 transition-colors"
+                          className="p-2 bg-gradient-to-r from-orange-500/20 to-amber-500/20 rounded-full text-orange-400 hover:from-orange-500/30 hover:to-amber-500/30 transition-colors border border-orange-500/30"
                         >
                           <LinkedInIcon />
                         </a>
@@ -220,7 +237,7 @@ const Teams = () => {
                       {groupedTeams['Faculty Advisor'][0].Email && (
                         <a
                           href={`mailto:${groupedTeams['Faculty Advisor'][0].Email}`}
-                          className="p-2 bg-cyan-500/20 rounded-full text-cyan-400 hover:bg-cyan-500/30 transition-colors"
+                          className="p-2 bg-gradient-to-r from-orange-500/20 to-amber-500/20 rounded-full text-orange-400 hover:from-orange-500/30 hover:to-amber-500/30 transition-colors border border-orange-500/30"
                         >
                           <EmailIcon />
                         </a>
@@ -231,7 +248,6 @@ const Teams = () => {
               </motion.div>
             </div>
           )}
-          {/* ...existing code... (current team UI) */}
           {/* Other Team Sections */}
           <div className="max-w-7xl mx-auto">
             {ROLE_ORDER.filter(role => role !== 'Faculty Advisor').map(role => {
@@ -239,7 +255,7 @@ const Teams = () => {
               // console.log(`Checking role: ${role}`, groupedTeams[role]);
               return groupedTeams[role] && groupedTeams[role].length > 0 ? (
                 <div key={role} className="mb-20">
-                  <h2 className="text-3xl font-bold mb-12 text-center text-cyan-400">
+                  <h2 className="text-3xl font-bold mb-12 text-center text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">
                     {role === 'Head' ? 'Heads' : 
                      role === 'Coordinator' ? 'Coordinators' :
                      role === 'Developer' ? 'Developers' : role}
@@ -252,7 +268,7 @@ const Teams = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.04 }}
-                        className="bg-slate-900/80 rounded-xl border border-cyan-500/20 p-4 flex flex-col items-center text-center group hover:border-cyan-500/40 transition-all"
+                        className="bg-slate-900/80 rounded-xl border border-orange-500/30 p-4 flex flex-col items-center text-center group hover:border-orange-500/50 transition-all"
                         whileHover={{ y: -5 }}
                       >
                         <div className="relative w-32 h-40 mb-4">
@@ -261,13 +277,13 @@ const Teams = () => {
                             alt={member.Name}
                             className="rounded-2xl object-cover w-full h-full"
                           />
-                          <div className="absolute inset-0 rounded-2xl border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-colors" />
+                          <div className="absolute inset-0 rounded-2xl border-2 border-orange-500/30 group-hover:border-orange-500/50 transition-colors" />
                         </div>
                         <h3 className="text-lg font-bold text-white mb-1">
                           {member.Name}
                         </h3>
                         {member.Position && (
-                          <p className="text-sm text-cyan-400 mb-1">{member.Position}</p>
+                          <p className="text-sm text-orange-400 mb-1">{member.Position}</p>
                         )}
                         <p className="text-sm text-slate-300 mb-3">{member.Department}</p>
                         {/* Social Links */}
@@ -277,7 +293,7 @@ const Teams = () => {
                               href={member.LinkedIn}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                              className="text-orange-400 hover:text-amber-300 transition-colors"
                             >
                               <LinkedInIcon />
                             </a>
@@ -285,7 +301,7 @@ const Teams = () => {
                           {member.Email && (
                             <a
                               href={`mailto:${member.Email}`}
-                              className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                              className="text-orange-400 hover:text-amber-300 transition-colors"
                             >
                               <EmailIcon />
                             </a>
@@ -297,9 +313,9 @@ const Teams = () => {
                   {/* Tech stack section*/}
                   {role === 'Developer' && (
                     <div className="mt-12 text-center">
-                      <div className="inline-flex flex-wrap justify-center gap-4 p-4 bg-slate-900/50 rounded-xl border border-cyan-500/20">
+                      <div className="inline-flex flex-wrap justify-center gap-4 p-4 bg-slate-900/50 rounded-xl border-2 border-orange-500/30">
                         {['React', 'TailwindCSS', 'Framer Motion', 'Google Sheets', 'Vite'].map(tech => (
-                          <span key={tech} className="px-3 py-1 bg-cyan-500/20 rounded-full text-cyan-400 text-sm">
+                          <span key={tech} className="px-3 py-1 bg-gradient-to-r from-orange-500/20 to-amber-500/20 rounded-full text-orange-400 text-sm border border-orange-500/30">
                             {tech}
                           </span>
                         ))}
@@ -311,19 +327,156 @@ const Teams = () => {
             })}
           </div>
         </>
+      ) : tab === '2024' ? (
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400">MetSoc Team 2024-25</h2>
+          {/* Faculty Advisor Section */}
+          {groupedTeams2024['Faculty Advisor'] && (
+            <div className="max-w-3xl mx-auto mb-20">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-gradient-to-br from-slate-900/90 to-orange-900/20 rounded-2xl border-2 border-orange-500/30 p-8 md:p-12 backdrop-blur-xl shadow-2xl"
+              >
+                <div className="flex flex-col md:flex-row items-center gap-6">
+                  <div className="relative">
+                    <div className="w-48 h-64 rounded-2xl overflow-hidden border-4 border-orange-500/20">
+                      <img
+                        src={groupedTeams2024['Faculty Advisor'][0].ImageUrl || '/avatar.jpg'}
+                        alt="Faculty Advisor"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl"
+                      animate={{
+                        boxShadow: [
+                          '0 0 20px rgba(249,115,22,0.2)',
+                          '0 0 40px rgba(249,115,22,0.4)',
+                          '0 0 20px rgba(249,115,22,0.2)',
+                        ],
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  </div>
+                  <div className="text-center md:text-left flex-1">
+                    <div className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/20 text-orange-400 text-sm mb-4 border border-orange-500/30">
+                      Faculty Advisor, MetSoc
+                    </div>
+                    <h2 className="text-3xl font-bold text-white mb-2">
+                      {groupedTeams2024['Faculty Advisor'][0].Name}
+                    </h2>
+                    {groupedTeams2024['Faculty Advisor'][0].Position && (
+                      <p className="text-orange-400 mb-2">
+                        {groupedTeams2024['Faculty Advisor'][0].Position}
+                      </p>
+                    )}
+                    <p className="text-xl text-amber-300 mb-6">
+                      {groupedTeams2024['Faculty Advisor'][0].Department}
+                    </p>
+                    <div className="flex gap-4 justify-center md:justify-start">
+                      {groupedTeams2024['Faculty Advisor'][0].LinkedIn && (
+                        <a
+                          href={groupedTeams2024['Faculty Advisor'][0].LinkedIn}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 bg-gradient-to-r from-orange-500/20 to-amber-500/20 rounded-full text-orange-400 hover:from-orange-500/30 hover:to-amber-500/30 transition-colors border border-orange-500/30"
+                        >
+                          <LinkedInIcon />
+                        </a>
+                      )}
+                      {groupedTeams2024['Faculty Advisor'][0].Email && (
+                        <a
+                          href={`mailto:${groupedTeams2024['Faculty Advisor'][0].Email}`}
+                          className="p-2 bg-gradient-to-r from-orange-500/20 to-amber-500/20 rounded-full text-orange-400 hover:from-orange-500/30 hover:to-amber-500/30 transition-colors border border-orange-500/30"
+                        >
+                          <EmailIcon />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          )}
+          {/* Other Team Sections */}
+          <div className="max-w-7xl mx-auto">
+            {ROLE_ORDER.filter(role => role !== 'Faculty Advisor').map(role => {
+              return groupedTeams2024[role] && groupedTeams2024[role].length > 0 ? (
+                <div key={role} className="mb-20">
+                  <h2 className="text-3xl font-bold mb-12 text-center text-orange-400">
+                    {role === 'Head' ? 'Heads' : 
+                     role === 'Coordinator' ? 'Coordinators' :
+                     role === 'Developer' ? 'Developers' : role}
+                  </h2>
+                  <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {groupedTeams2024[role].map((member, index) => (
+                      <motion.div
+                        key={member.Name}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.04 }}
+                        className="bg-slate-900/80 rounded-xl border border-orange-500/30 p-4 flex flex-col items-center text-center group hover:border-orange-500/50 transition-all"
+                        whileHover={{ y: -5 }}
+                      >
+                        <div className="relative w-32 h-40 mb-4">
+                          <img
+                            src={member.ImageUrl || '/avatar.jpg'}
+                            alt={member.Name}
+                            className="rounded-2xl object-cover w-full h-full"
+                          />
+                          <div className="absolute inset-0 rounded-2xl border-2 border-orange-500/30 group-hover:border-orange-500/50 transition-colors" />
+                        </div>
+                        <h3 className="text-lg font-bold text-white mb-1">
+                          {member.Name}
+                        </h3>
+                        {member.Position && (
+                          <p className="text-sm text-orange-400 mb-1">{member.Position}</p>
+                        )}
+                        <p className="text-sm text-slate-300 mb-3">{member.Department}</p>
+                        {/* Social Links */}
+                        <div className="flex gap-4 mt-auto">
+                          {member.LinkedIn && (
+                            <a
+                              href={member.LinkedIn}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-orange-400 hover:text-amber-300 transition-colors"
+                            >
+                              <LinkedInIcon />
+                            </a>
+                          )}
+                          {member.Email && (
+                            <a
+                              href={`mailto:${member.Email}`}
+                              className="text-orange-400 hover:text-amber-300 transition-colors"
+                            >
+                              <EmailIcon />
+                            </a>
+                          )}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              ) : null;
+            })}
+          </div>
+        </div>
       ) : (
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold mb-8 text-center text-cyan-400">MetSoc Team 2022-23</h2>
+          <h2 className="text-4xl font-bold mb-8 text-center text-orange-400">MetSoc Team 2022-23</h2>
           {/* Faculty Advisor Card for old team */}
           <div className="max-w-3xl mx-auto mb-20">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-slate-900/90 to-cyan-900/20 rounded-2xl border border-cyan-500/30 p-8 md:p-12 backdrop-blur-xl shadow-2xl"
+              className="bg-gradient-to-br from-slate-900/90 to-orange-900/20 rounded-2xl border border-orange-500/30 p-8 md:p-12 backdrop-blur-xl shadow-2xl"
             >
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="relative">
-                  <div className="w-48 h-64 rounded-2xl overflow-hidden border-4 border-cyan-500/20">
+                  <div className="w-48 h-64 rounded-2xl overflow-hidden border-4 border-orange-500/30">
                     <img
                       src={team2022.FacultyAdvisor.image || '/avatar.jpg'}
                       alt="Faculty Advisor"
@@ -343,18 +496,18 @@ const Teams = () => {
                   />
                 </div>
                 <div className="text-center md:text-left flex-1">
-                  <div className="inline-block px-4 py-1 rounded-full bg-cyan-500/20 text-cyan-400 text-sm mb-4">
+                  <div className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/20 text-orange-400 text-sm mb-4 border border-orange-500/30">
                     Faculty Advisor, MetSoc
                   </div>
                   <h2 className="text-3xl font-bold text-white mb-2">
                     {team2022.FacultyAdvisor.name}
                   </h2>
                   {team2022.FacultyAdvisor.position && (
-                    <p className="text-cyan-400 mb-2">
+                    <p className="text-orange-400 mb-2">
                       {team2022.FacultyAdvisor.position}
                     </p>
                   )}
-                  <p className="text-xl text-cyan-300 mb-6">
+                  <p className="text-xl text-amber-300 mb-6">
                     {team2022.FacultyAdvisor.department}
                   </p>
                   <div className="flex gap-4 justify-center md:justify-start">
@@ -363,7 +516,7 @@ const Teams = () => {
                         href={team2022.FacultyAdvisor.linkedIn}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2 bg-cyan-500/20 rounded-full text-cyan-400 hover:bg-cyan-500/30 transition-colors"
+                        className="p-2 bg-gradient-to-r from-orange-500/20 to-amber-500/20 rounded-full text-orange-400 hover:from-orange-500/30 hover:to-amber-500/30 transition-colors border border-orange-500/30"
                       >
                         <LinkedInIcon />
                       </a>
@@ -371,7 +524,7 @@ const Teams = () => {
                     {team2022.FacultyAdvisor.email && (
                       <a
                         href={`mailto:${team2022.FacultyAdvisor.email}`}
-                        className="p-2 bg-cyan-500/20 rounded-full text-cyan-400 hover:bg-cyan-500/30 transition-colors"
+                        className="p-2 bg-gradient-to-r from-orange-500/20 to-amber-500/20 rounded-full text-orange-400 hover:from-orange-500/30 hover:to-amber-500/30 transition-colors border border-orange-500/30"
                       >
                         <EmailIcon />
                       </a>
@@ -385,12 +538,12 @@ const Teams = () => {
           <div className="flex flex-col items-center gap-8">
             {/* President */}
             <div className="w-full flex flex-col items-center">
-              <h3 className="text-2xl font-bold text-cyan-400 mb-4">President</h3>
+              <h3 className="text-2xl font-bold text-orange-400 mb-4">President</h3>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="bg-slate-900/80 rounded-xl border border-cyan-500/20 p-4 flex flex-col items-center text-center group hover:border-cyan-500/40 transition-all w-64"
+                className="bg-slate-900/80 rounded-xl border border-orange-500/30 p-4 flex flex-col items-center text-center group hover:border-orange-500/50 transition-all w-64"
                 whileHover={{ y: -5 }}
               >
                 <div className="relative w-32 h-40 mb-4">
@@ -399,7 +552,7 @@ const Teams = () => {
                     alt={team2022.President.name}
                     className="rounded-2xl object-cover w-full h-full"
                   />
-                  <div className="absolute inset-0 rounded-2xl border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-colors" />
+                  <div className="absolute inset-0 rounded-2xl border-2 border-orange-500/30 group-hover:border-orange-500/50 transition-colors" />
                 </div>
                 <h3 className="text-lg font-bold text-white mb-1">{team2022.President.name}</h3>
                 <div className="flex gap-4 mt-auto">
@@ -408,7 +561,7 @@ const Teams = () => {
                       href={team2022.President.linkedIn}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                      className="text-orange-400 hover:text-amber-300 transition-colors"
                     >
                       <LinkedInIcon />
                     </a>
@@ -419,12 +572,12 @@ const Teams = () => {
 
             {/* Chair */}
             <div className="w-full flex flex-col items-center">
-              <h3 className="text-xl font-bold text-cyan-400 mb-2">Chair, Research and Technical Content</h3>
+              <h3 className="text-xl font-bold text-orange-400 mb-2">Chair, Research and Technical Content</h3>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="bg-slate-900/80 rounded-xl border border-cyan-500/20 p-4 flex flex-col items-center text-center group hover:border-cyan-500/40 transition-all w-56"
+                className="bg-slate-900/80 rounded-xl border border-orange-500/30 p-4 flex flex-col items-center text-center group hover:border-orange-500/50 transition-all w-56"
                 whileHover={{ y: -5 }}
               >
                 <div className="relative w-28 h-36 mb-4">
@@ -433,7 +586,7 @@ const Teams = () => {
                     alt={team2022.President.children[0].name}
                     className="rounded-2xl object-cover w-full h-full"
                   />
-                  <div className="absolute inset-0 rounded-2xl border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-colors" />
+                  <div className="absolute inset-0 rounded-2xl border-2 border-orange-500/30 group-hover:border-orange-500/50 transition-colors" />
                 </div>
                 <h3 className="text-lg font-bold text-white mb-1">{team2022.President.children[0].name}</h3>
                 <div className="flex gap-4 mt-auto">
@@ -442,7 +595,7 @@ const Teams = () => {
                       href={team2022.President.children[0].linkedIn}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                      className="text-orange-400 hover:text-amber-300 transition-colors"
                     >
                       <LinkedInIcon />
                     </a>
@@ -453,12 +606,12 @@ const Teams = () => {
 
             {/* Secretary */}
             <div className="w-full flex flex-col items-center">
-              <h3 className="text-xl font-bold text-cyan-400 mb-2">Secretary</h3>
+              <h3 className="text-xl font-bold text-orange-400 mb-2">Secretary</h3>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="bg-slate-900/80 rounded-xl border border-cyan-500/20 p-4 flex flex-col items-center text-center group hover:border-cyan-500/40 transition-all w-56"
+                className="bg-slate-900/80 rounded-xl border border-orange-500/30 p-4 flex flex-col items-center text-center group hover:border-orange-500/50 transition-all w-56"
                 whileHover={{ y: -5 }}
               >
                 <div className="relative w-28 h-36 mb-4">
@@ -467,7 +620,7 @@ const Teams = () => {
                     alt={team2022.President.children[0].children[0].name}
                     className="rounded-2xl object-cover w-full h-full"
                   />
-                  <div className="absolute inset-0 rounded-2xl border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-colors" />
+                  <div className="absolute inset-0 rounded-2xl border-2 border-orange-500/30 group-hover:border-orange-500/50 transition-colors" />
                 </div>
                 <h3 className="text-lg font-bold text-white mb-1">{team2022.President.children[0].children[0].name}</h3>
                 <div className="flex gap-4 mt-auto">
@@ -476,7 +629,7 @@ const Teams = () => {
                       href={team2022.President.children[0].children[0].linkedIn}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                      className="text-orange-400 hover:text-amber-300 transition-colors"
                     >
                       <LinkedInIcon />
                     </a>
@@ -487,12 +640,12 @@ const Teams = () => {
 
             {/* Treasurer */}
             <div className="w-full flex flex-col items-center">
-              <h3 className="text-xl font-bold text-cyan-400 mb-2">Treasurer</h3>
+              <h3 className="text-xl font-bold text-orange-400 mb-2">Treasurer</h3>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="bg-slate-900/80 rounded-xl border border-cyan-500/20 p-4 flex flex-col items-center text-center group hover:border-cyan-500/40 transition-all w-56"
+                className="bg-slate-900/80 rounded-xl border border-orange-500/30 p-4 flex flex-col items-center text-center group hover:border-orange-500/50 transition-all w-56"
                 whileHover={{ y: -5 }}
               >
                 <div className="relative w-28 h-36 mb-4">
@@ -501,7 +654,7 @@ const Teams = () => {
                     alt={team2022.President.children[0].children[0].children[0].name}
                     className="rounded-2xl object-cover w-full h-full"
                   />
-                  <div className="absolute inset-0 rounded-2xl border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-colors" />
+                  <div className="absolute inset-0 rounded-2xl border-2 border-orange-500/30 group-hover:border-orange-500/50 transition-colors" />
                 </div>
                 <h3 className="text-lg font-bold text-white mb-1">{team2022.President.children[0].children[0].children[0].name}</h3>
                 <div className="flex gap-4 mt-auto">
@@ -510,7 +663,7 @@ const Teams = () => {
                       href={team2022.President.children[0].children[0].children[0].linkedIn}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                      className="text-orange-400 hover:text-amber-300 transition-colors"
                     >
                       <LinkedInIcon />
                     </a>
@@ -521,7 +674,7 @@ const Teams = () => {
 
             {/* Joint Secretaries */}
             <div className="w-full flex flex-col items-center gap-4">
-              <h3 className="text-xl font-bold text-cyan-400 mb-2">Joint Secretaries</h3>
+              <h3 className="text-xl font-bold text-orange-400 mb-2">Joint Secretaries</h3>
               <div className="flex flex-wrap gap-4 justify-center">
                 {[team2022.President.children[0].children[0].children[0].children[0], team2022.President.children[0].children[0].children[0].children[0].children[0]].map((jointSec, idx) => (
                   jointSec && (
@@ -530,7 +683,7 @@ const Teams = () => {
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      className="bg-slate-900/80 rounded-xl border border-cyan-500/20 p-4 flex flex-col items-center text-center group hover:border-cyan-500/40 transition-all w-56"
+                      className="bg-slate-900/80 rounded-xl border border-orange-500/30 p-4 flex flex-col items-center text-center group hover:border-orange-500/50 transition-all w-56"
                       whileHover={{ y: -5 }}
                     >
                       <div className="relative w-28 h-36 mb-4">
@@ -539,7 +692,7 @@ const Teams = () => {
                           alt={jointSec.name}
                           className="rounded-2xl object-cover w-full h-full"
                         />
-                        <div className="absolute inset-0 rounded-2xl border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-colors" />
+                        <div className="absolute inset-0 rounded-2xl border-2 border-orange-500/30 group-hover:border-orange-500/50 transition-colors" />
                       </div>
                       <h3 className="text-lg font-bold text-white mb-1">{jointSec.name}</h3>
                       <div className="flex gap-4 mt-auto">
@@ -548,7 +701,7 @@ const Teams = () => {
                             href={jointSec.linkedIn}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                            className="text-orange-400 hover:text-amber-300 transition-colors"
                           >
                             <LinkedInIcon />
                           </a>

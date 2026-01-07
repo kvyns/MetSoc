@@ -15,8 +15,8 @@ const Footer = () => {
     <footer className="relative mt-20">
       {/* Background gradients */}
       <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-xl">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-950/10 to-slate-950/50"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-from)_0%,_var(--tw-gradient-to)_100%)] from-cyan-500/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-orange-950/10 to-slate-950/50"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-from)_0%,_var(--tw-gradient-to)_100%)] from-orange-500/10 to-transparent"></div>
       </div>
       
       <div className="relative max-w-7xl mx-auto px-4 pt-20 pb-8">
@@ -25,13 +25,15 @@ const Footer = () => {
           {/* MetSoc Section*/}
           <div className="lg:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
             <div className="flex items-center gap-4 mb-6">
-              <img 
+              <motion.img 
                 src="/assets/logo/metsoc-logo.png" 
                 alt="MetSoc Logo" 
                 className="h-12 w-auto rounded-full"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
               />
               <h3 className="text-2xl font-bold text-white">
-                MetSoc <span className="text-cyan-400">IIT Ropar</span>
+                MetSoc <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">IIT Ropar</span>
               </h3>
             </div>
             <p className="text-slate-400 text-base leading-relaxed mb-6">
@@ -49,11 +51,12 @@ const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 bg-slate-800/50 rounded-lg flex items-center justify-center group 
-                             hover:bg-slate-800 transition-all hover:scale-110 text-cyan-400 
-                             hover:text-cyan-300"
+                             hover:bg-gradient-to-br hover:from-orange-500/20 hover:to-amber-500/20 transition-all hover:scale-110 text-orange-400 
+                             hover:text-orange-300 border border-orange-500/20 hover:border-orange-500/40"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
+                    whileHover={{ rotate: 360 }}
                   >
                     <Icon className="w-5 h-5" />
                   </motion.a>
@@ -80,17 +83,17 @@ const Footer = () => {
                       href={link.path}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-2 group py-1"
+                      className="text-slate-400 hover:text-orange-400 transition-colors flex items-center gap-2 group py-1"
                     >
-                      <ChevronRight className="w-4 h-4 text-cyan-400/50 group-hover:text-cyan-400" />
+                      <ChevronRight className="w-4 h-4 text-orange-400/50 group-hover:text-orange-400" />
                       {link.name}
                     </a>
                   ) : (
                     <Link 
                       to={link.path}
-                      className="text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-2 group py-1"
+                      className="text-slate-400 hover:text-orange-400 transition-colors flex items-center gap-2 group py-1"
                     >
-                      <ChevronRight className="w-4 h-4 text-cyan-400/50 group-hover:text-cyan-400" />
+                      <ChevronRight className="w-4 h-4 text-orange-400/50 group-hover:text-orange-400" />
                       {link.name}
                     </Link>
                   )}
@@ -118,20 +121,25 @@ const Footer = () => {
                 },
                 { 
                   icon: Phone,
-                  text: '+91 8770418102',
+                  text: '+91 8619585751',
                   subtext: 'Mon-Fri 9am to 6pm' 
                 }
               ].map((item, index) => (
                 <motion.div
                   key={index}
-                  className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start"
+                  className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start group"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.2 }}
+                  whileHover={{ x: 5 }}
                 >
-                  <div className="w-10 h-10 bg-gradient-to-br from-cyan-500/10 to-emerald-500/10 rounded-lg flex items-center justify-center border border-cyan-500/20">
-                    <item.icon className="w-5 h-5 text-cyan-400" />
-                  </div>
+                  <motion.div 
+                    className="w-10 h-10 bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-lg flex items-center justify-center border-2 border-orange-500/30 group-hover:border-orange-500/50 transition-colors"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <item.icon className="w-5 h-5 text-orange-400" />
+                  </motion.div>
                   <div className="flex flex-col text-left">
                     <p className="text-slate-300">{item.text}</p>
                     <p className="text-sm text-slate-500">{item.subtext}</p>
@@ -149,9 +157,9 @@ const Footer = () => {
               © {new Date().getFullYear()} MetSoc IIT Ropar. All rights reserved.
             </p>
             <div className="flex items-center gap-6 text-sm text-slate-500">
-              <a href="#" className="hover:text-cyan-400 transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-orange-400 transition-colors">Privacy Policy</a>
               <span className="w-1 h-1 bg-slate-700 rounded-full"></span>
-              <a href="#" className="hover:text-cyan-400 transition-colors">Terms of Service</a>
+              <a href="#" className="hover:text-orange-400 transition-colors">Terms of Service</a>
             </div>
           </div>
         </div>

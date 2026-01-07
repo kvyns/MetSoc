@@ -9,9 +9,9 @@ export const homeContent = {
   },
   edvantage: {
     badge: "Premier Career Workshop",
-    title: "Ed-Vantage 2025",
+    title: "Ed-Vantage 2026",
     description: "Join us for an immersive two-day journey into the future of metallurgical engineering. Connect with industry leaders, explore cutting-edge research, and shape your career path.",
-    date: "Jan 24-25, 2025",
+    date: "Jan 16-17, 2026",
     highlights: [
       "Industry Expert Talks",
       "Hands-on Workshops",
@@ -46,7 +46,7 @@ export const homeContent = {
 export const edvantageContent = {
   hero: {
     badge: "Premier Technical Event",
-    title: "EdVantage 2025",
+    title: "EdVantage 2026",
     description: "Join us for an immersive two-day journey into the future of metallurgical engineering.",
     highlights: [
       "Industry Expert Talks",
@@ -79,7 +79,7 @@ export const siteConfig = {
   departmentUrl: 'https://mme.iitrpr.ac.in/',
   contact: {
     email: 'metsoc@iitrpr.ac.in',
-    phone: '+91 8770418102',
+    phone: '+91 8619585751',
     address: 'IIT Ropar, Punjab, India',
     pincode: '140001'
   }
@@ -97,7 +97,7 @@ export const navLinks = [
 export const socialLinks = [
   { 
     name: 'LinkedIn', 
-    url: 'https://www.linkedin.com/in/metsoc-iit-ropar-b1b150225',
+    url: 'https://www.linkedin.com/company/metsoc-metallurgical-and-materials-society/5',
     color: '#0A66C2' 
   },
 //   { 
@@ -107,7 +107,7 @@ export const socialLinks = [
 //   },
   { 
     name: 'Instagram', 
-    url: 'https://www.instagram.com/metsoc_iitropar/',
+    url: 'https://www.instagram.com/metsoc_iitrpr/',
     color: '#E4405F' 
   }
 ];
