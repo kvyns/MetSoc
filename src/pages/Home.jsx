@@ -329,7 +329,7 @@ const Home = () => {
                   className="w-full object-cover object-center"
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3 className="text-lg font-semibold text-white mb-1">Dr. Pratik Ray</h3>
+                  <h3 className="text-lg font-semibold text-white mb-1">Dr. Neha Sardana</h3>
                   <p className="text-orange-400 text-sm">Head of Department - MME</p>
                 </div>
               </motion.div>
