@@ -45,6 +45,3 @@ export const usePrefetch = () => {
 };
 
 export default usePrefetch;
-};
-
-export default usePrefetch;
