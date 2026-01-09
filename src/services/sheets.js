@@ -10,6 +10,9 @@ export const SHEET_NAMES = {
   edvantage: 'EdVantage'
 };
 
+// Request deduplication - prevent multiple simultaneous requests for the same sheet
+const pendingRequests = new Map();
+
 export const fetchSheetData = async (sheetKey) => {
   try {
     // Add validation for sheetKey
@@ -17,32 +20,48 @@ export const fetchSheetData = async (sheetKey) => {
       throw new Error(`Invalid sheet key: ${sheetKey}`);
     }
 
+    // Check if there's already a pending request for this sheet
+    if (pendingRequests.has(sheetKey)) {
+      return pendingRequests.get(sheetKey);
+    }
+
     // Add debug logging
     console.log('Fetching sheet:', sheetKey, SHEET_NAMES[sheetKey]);
     
-    const response = await fetch(`${APPS_SCRIPT_URL}?sheet=${SHEET_NAMES[sheetKey]}`, {
+    const requestPromise = fetch(`${APPS_SCRIPT_URL}?sheet=${SHEET_NAMES[sheetKey]}`, {
       method: 'GET',
       mode: 'cors',
       headers: {
         'Accept': 'application/json',
       },
-    });
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+        const data = await response.json();
+        // Add more detailed debug logging
+        console.log(`Sheet "${SHEET_NAMES[sheetKey]}" response:`, data);
 
-    const data = await response.json();
-    // Add more detailed debug logging
-    console.log(`Sheet "${SHEET_NAMES[sheetKey]}" response:`, data);
+        if (data.error) {
+          throw new Error(`Sheet error: ${data.error}`);
+        }
 
-    if (data.error) {
-      throw new Error(`Sheet error: ${data.error}`);
-    }
+        return data;
+      })
+      .finally(() => {
+        // Remove from pending requests when done
+        pendingRequests.delete(sheetKey);
+      });
 
-    return data;
+    // Store the promise
+    pendingRequests.set(sheetKey, requestPromise);
+    
+    return await requestPromise;
   } catch (error) {
     console.error(`Error fetching ${SHEET_NAMES[sheetKey]} sheet:`, error);
+    pendingRequests.delete(sheetKey);
     return [];
   }
 };

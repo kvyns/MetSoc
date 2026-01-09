@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import Home from './pages/Home'
-import About from './pages/About'
-import Events from './pages/Events'
-import Research from './pages/Research'
-import Contact from './pages/Contact'
-import Teams from './pages/Teams'
-import EdVantage from './pages/EdVantage'
-import Updates from './pages/Updates'
+import Loader from './components/Loader'
 import './App.css'
 import { DataProvider } from './context/DataContext'
+
+// Lazy load page components
+const Home = lazy(() => import('./pages/Home'))
+const About = lazy(() => import('./pages/About'))
+const Events = lazy(() => import('./pages/Events'))
+const Research = lazy(() => import('./pages/Research'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Teams = lazy(() => import('./pages/Teams'))
+const EdVantage = lazy(() => import('./pages/EdVantage'))
+const Updates = lazy(() => import('./pages/Updates'))
 
 function App() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
@@ -81,16 +84,18 @@ function App() {
           <div className="relative z-10"> {/* Content wrapper */}
             <Navbar />
             <main className="min-h-screen">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/events" element={<Events />} />
-                <Route path="/research" element={<Research />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/teams" element={<Teams />} />
-                <Route path="/edvantage" element={<EdVantage />} />
-                <Route path="/updates" element={<Updates />} />
-              </Routes>
+              <Suspense fallback={<Loader message="Loading page..." />}>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/events" element={<Events />} />
+                  <Route path="/research" element={<Research />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/teams" element={<Teams />} />
+                  <Route path="/edvantage" element={<EdVantage />} />
+                  <Route path="/updates" element={<Updates />} />
+                </Routes>
+              </Suspense>
             </main>
             <Footer />
           </div>

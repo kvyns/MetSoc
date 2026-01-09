@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSheetData } from '../hooks/useSheetData'
 import { SHEET_NAMES } from '../services/sheets'
@@ -31,12 +31,18 @@ const Events = () => {
     }
   }, [events]);
 
-  // unique categories events data
-  const categories = ['all', ...(events ? [...new Set(events.map(event => event.Category))] : [])];
+  // unique categories events data - memoized
+  const categories = useMemo(() => 
+    ['all', ...(events ? [...new Set(events.map(event => event.Category))] : [])],
+    [events]
+  );
 
-  const filteredEvents = selectedCategory === 'all' 
-    ? events 
-    : events.filter(event => event.Category?.toLowerCase() === selectedCategory.toLowerCase());
+  const filteredEvents = useMemo(() => 
+    selectedCategory === 'all' 
+      ? events 
+      : events?.filter(event => event.Category?.toLowerCase() === selectedCategory.toLowerCase()),
+    [events, selectedCategory]
+  );
 
   // Updated loading state
   if (loading) {

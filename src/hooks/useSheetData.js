@@ -1,17 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useData } from '../context/DataContext';
 
 export const useSheetData = (sheetKey, parserKey) => {
   const { cache, loading, error, fetchData } = useData();
   const [data, setData] = useState(cache[sheetKey] || []);
+  const fetchedRef = useRef(false);
 
   useEffect(() => {
-    if (!cache[sheetKey]) {
+    // Only fetch if not in cache and not already fetched
+    if (!cache[sheetKey] && !fetchedRef.current && !loading[sheetKey]) {
+      fetchedRef.current = true;
       fetchData(sheetKey)
-        .then(result => setData(result))
+        .then(result => {
+          if (result) setData(result);
+        })
         .catch(console.error);
+    } else if (cache[sheetKey]) {
+      setData(cache[sheetKey]);
     }
-  }, [sheetKey, cache, fetchData]);
+  }, [sheetKey, cache, fetchData, loading]);
 
   return {
     data: cache[sheetKey] || data,
