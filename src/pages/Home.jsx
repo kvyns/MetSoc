@@ -384,61 +384,72 @@ const Home = () => {
                 ))}
               </div>
 
-              {/* Images and Captions */}
+              {/* Images and Captions - Only render current, prev, and next slides */}
               <div className="flex flex-col">
-                {images.map((img, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: index === currentSlide ? 1 : 0 }}
-                    transition={{ duration: 0.5 }}
-                    className={`absolute inset-0 ${index === currentSlide ? 'relative' : ''}`}
-                  >
-                    <div className="flex items-center justify-center p-2 min-h-[400px] bg-slate-950/20">
-                      <img 
-                        src={img.url} 
-                        alt={img.title} 
-                        className="max-h-full max-w-full w-auto h-auto object-contain rounded-lg"
-                        onError={() => handleImageError(img.url)}
-                        loading="lazy" // Add lazy loading
-                      />
-                    </div>
+                {images.map((img, index) => {
+                  // Only render current slide and adjacent ones for performance
+                  const shouldRender = 
+                    index === currentSlide || 
+                    index === (currentSlide - 1 + images.length) % images.length ||
+                    index === (currentSlide + 1) % images.length;
+                  
+                  if (!shouldRender) return null;
 
-                    {/* Caption Section*/}
-                    <div className="bg-slate-900/95 border-t border-orange-500/20">
-                      <div className="py-3 px-6">
-                        <div className="max-w-3xl mx-auto text-center">
-                          <motion.h3 
-                            initial={{ y: 10, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                            className="text-xl font-semibold text-white mb-1"
-                          >
-                            {img.title}
-                          </motion.h3>
-                          <motion.p 
-                            initial={{ y: 10, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.3 }}
-                            className="text-slate-300 text-sm"
-                          >
-                            {img.description}
-                          </motion.p>
-                          {img.category && (
-                            <motion.span
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              transition={{ delay: 0.4 }}
-                              className="inline-block mt-2 px-3 py-1 bg-gradient-to-r from-orange-500/20 to-amber-500/20 text-orange-400 text-sm rounded-full border border-orange-500/30"
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: index === currentSlide ? 1 : 0 }}
+                      transition={{ duration: 0.5 }}
+                      className={`absolute inset-0 ${index === currentSlide ? 'relative' : ''}`}
+                      style={{ pointerEvents: index === currentSlide ? 'auto' : 'none' }}
+                    >
+                      <div className="flex items-center justify-center p-2 min-h-[400px] bg-slate-950/20">
+                        <img 
+                          src={img.url} 
+                          alt={img.title} 
+                          className="max-h-full max-w-full w-auto h-auto object-contain rounded-lg"
+                          onError={() => handleImageError(img.url)}
+                          loading={index === 0 ? "eager" : "lazy"}
+                        />
+                      </div>
+
+                      {/* Caption Section*/}
+                      <div className="bg-slate-900/95 border-t border-orange-500/20">
+                        <div className="py-3 px-6">
+                          <div className="max-w-3xl mx-auto text-center">
+                            <motion.h3 
+                              initial={{ y: 10, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ delay: 0.2 }}
+                              className="text-xl font-semibold text-white mb-1"
                             >
-                              {img.category}
-                            </motion.span>
-                          )}
+                              {img.title}
+                            </motion.h3>
+                            <motion.p 
+                              initial={{ y: 10, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ delay: 0.3 }}
+                              className="text-slate-300 text-sm"
+                            >
+                              {img.description}
+                            </motion.p>
+                            {img.category && (
+                              <motion.span
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.4 }}
+                                className="inline-block mt-2 px-3 py-1 bg-gradient-to-r from-orange-500/20 to-amber-500/20 text-orange-400 text-sm rounded-full border border-orange-500/30"
+                              >
+                                {img.category}
+                              </motion.span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           ) : (
