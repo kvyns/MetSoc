@@ -192,7 +192,6 @@ const Loader = ({ message = "Loading...", showTips = true }) => {
           ))}
         </div>
       </motion.div>
-      </div>
     </div>
   )
 }
