@@ -56,23 +56,6 @@ export const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState({});
   const [error, setError] = useState({});
 
-  // Load initial cache from localStorage
-  useEffect(() => {
-    const initialCache = {};
-    Object.keys(localStorage).forEach(key => {
-      if (key.startsWith(CACHE_PREFIX)) {
-        const sheetKey = key.replace(CACHE_PREFIX, '');
-        const data = loadFromLocalStorage(sheetKey);
-        if (data) {
-          initialCache[sheetKey] = data;
-        }
-      }
-    });
-    if (Object.keys(initialCache).length > 0) {
-      setCache(initialCache);
-    }
-  }, []);
-
   const fetchData = useCallback(async (sheetKey) => {
     // Check localStorage first
     const cachedData = loadFromLocalStorage(sheetKey);
@@ -86,6 +69,64 @@ export const DataProvider = ({ children }) => {
       setError(prev => ({ ...prev, [sheetKey]: null }));
 
       const data = await fetchSheetData(sheetKey);
+      
+      setCache(prev => ({ ...prev, [sheetKey]: data }));
+      saveToLocalStorage(sheetKey, data);
+      return data;
+    } catch (err) {
+      setError(prev => ({ ...prev, [sheetKey]: err.message }));
+      return [];
+    } finally {
+      setLoading(prev => ({ ...prev, [sheetKey]: false }));
+    }
+  }, []);
+
+  // Load initial cache from localStorage and eagerly fetch homepage data
+  useEffect(() => {
+    const initialCache = {};
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith(CACHE_PREFIX + CACHE_VERSION)) {
+        const sheetKey = key.replace(CACHE_PREFIX + CACHE_VERSION + '_', '');
+        const data = loadFromLocalStorage(sheetKey);
+        if (data) {
+          initialCache[sheetKey] = data;
+        }
+      }
+    });
+    if (Object.keys(initialCache).length > 0) {
+      setCache(initialCache);
+    }
+
+    // Eagerly fetch homepage data in parallel if not in cache
+    const homePageData = ['updates', 'gallery', 'events'];
+    const missingHomeData = homePageData.filter(key => !initialCache[key]);
+    
+    if (missingHomeData.length > 0) {
+      // Fetch all homepage data in parallel
+      Promise.all(missingHomeData.map(key => fetchData(key).catch(console.error)))
+        .then(() => {
+          // After homepage loads, prefetch other pages in background
+          setTimeout(() => {
+            const otherPages = ['research', 'teams', 'teams2024', 'edvantage'];
+            otherPages.forEach(key => {
+              if (!loadFromLocalStorage(key)) {
+                fetchData(key).catch(console.error);
+              }
+            });
+          }, 1000);
+        });
+    } else {
+      // If homepage data is already cached, prefetch other pages immediately
+      setTimeout(() => {
+        const otherPages = ['research', 'teams', 'teams2024', 'edvantage'];
+        otherPages.forEach(key => {
+          if (!loadFromLocalStorage(key)) {
+            fetchData(key).catch(console.error);
+          }
+        });
+      }, 500);
+    }
+  }, [fetchData]);
       
       setCache(prev => ({ ...prev, [sheetKey]: data }));
       saveToLocalStorage(sheetKey, data);
