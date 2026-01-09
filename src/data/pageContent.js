@@ -24,8 +24,8 @@ export const homeContent = {
   hod: {
     title: "Message from HOD",
     content: [
-      "Welcome to the Department of Metallurgical and Materials Engineering at IIT Ropar. Our department is committed to excellence in education and research...",
-      "Through MetSoc, we aim to bridge the gap between academic learning and industrial applications..."
+      "Welcome to the Department of Metallurgical and Materials Engineering at IIT Ropar. The department is dedicated to advancing excellence in education and research, cultivating a rigorous academic environment that promotes innovation and nurtures the next generation of leaders in metallurgical and materials engineering.",  
+      "Through the MetSoc platform, we strive to seamlessly connect classroom fundamental concepts with real-world industrial practice, enabling students to gain practical exposure and engage with emerging technologies and state-of-the-art developments in materials science and engineering."
     ]
   },
   gallery: {
