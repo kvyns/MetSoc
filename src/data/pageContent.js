@@ -74,7 +74,7 @@ export const edvantageContent = {
 
 export const siteConfig = {
   name: 'MetSoc IIT Ropar',
-  logo: '/assets/logo/metsoc-logo.png',
+  logo: `${import.meta.env.BASE_URL}assets/logo/metsoc-logo.png`,
   description: 'Advancing the field of metallurgy and materials science through education, research, and innovation.',
   departmentUrl: 'https://mme.iitrpr.ac.in/',
   contact: {

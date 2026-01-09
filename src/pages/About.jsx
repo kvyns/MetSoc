@@ -49,7 +49,7 @@ const About = () => {
               />
               <div className="w-full h-full rounded-full overflow-hidden border-4 border-orange-500/20">
                 <img 
-                  src="/assets/logo/metsoc-logo.png"
+                  src={`${import.meta.env.BASE_URL}assets/logo/metsoc-logo.png`}
                   alt="MetSoc Logo"
                   className="w-full h-full object-cover"
                 />

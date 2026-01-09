@@ -26,7 +26,7 @@ const Footer = () => {
           <div className="lg:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
             <div className="flex items-center gap-4 mb-6">
               <motion.img 
-                src="/assets/logo/metsoc-logo.png" 
+                src={`${import.meta.env.BASE_URL}assets/logo/metsoc-logo.png`}
                 alt="MetSoc Logo" 
                 className="h-12 w-auto rounded-full"
                 whileHover={{ rotate: 360 }}
