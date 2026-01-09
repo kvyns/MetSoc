@@ -127,17 +127,6 @@ export const DataProvider = ({ children }) => {
       }, 500);
     }
   }, [fetchData]);
-      
-      setCache(prev => ({ ...prev, [sheetKey]: data }));
-      saveToLocalStorage(sheetKey, data);
-      return data;
-    } catch (err) {
-      setError(prev => ({ ...prev, [sheetKey]: err.message }));
-      return [];
-    } finally {
-      setLoading(prev => ({ ...prev, [sheetKey]: false }));
-    }
-  }, []);
 
   const clearCache = useCallback((sheetKey) => {
     if (sheetKey) {
