@@ -5,11 +5,12 @@ const DataContext = createContext(null);
 
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 const CACHE_PREFIX = 'metsoc_cache_';
+const CACHE_VERSION = 'v2'; // Increment to invalidate old cache
 
 // Load cache from localStorage
 const loadFromLocalStorage = (key) => {
   try {
-    const item = localStorage.getItem(CACHE_PREFIX + key);
+    const item = localStorage.getItem(CACHE_PREFIX + CACHE_VERSION + '_' + key);
     if (!item) return null;
     
     const { data, timestamp } = JSON.parse(item);
@@ -21,7 +22,7 @@ const loadFromLocalStorage = (key) => {
     }
     
     // Remove expired cache
-    localStorage.removeItem(CACHE_PREFIX + key);
+    localStorage.removeItem(CACHE_PREFIX + CACHE_VERSION + '_' + key);
     return null;
   } catch (error) {
     console.error('Error loading from localStorage:', error);
@@ -34,9 +35,17 @@ const saveToLocalStorage = (key, data) => {
   try {
     const item = {
       data,
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      version: CACHE_VERSION
     };
-    localStorage.setItem(CACHE_PREFIX + key, JSON.stringify(item));
+    localStorage.setItem(CACHE_PREFIX + CACHE_VERSION + '_' + key, JSON.stringify(item));
+    
+    // Clean up old versions
+    Object.keys(localStorage).forEach(storageKey => {
+      if (storageKey.startsWith(CACHE_PREFIX) && !storageKey.includes(CACHE_VERSION)) {
+        localStorage.removeItem(storageKey);
+      }
+    });
   } catch (error) {
     console.error('Error saving to localStorage:', error);
   }

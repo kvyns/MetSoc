@@ -5,6 +5,7 @@ import Footer from './components/Footer'
 import Loader from './components/Loader'
 import './App.css'
 import { DataProvider } from './context/DataContext'
+import usePrefetch from './hooks/usePrefetch'
 
 // Lazy load page components
 const Home = lazy(() => import('./pages/Home'))
@@ -15,6 +16,41 @@ const Contact = lazy(() => import('./pages/Contact'))
 const Teams = lazy(() => import('./pages/Teams'))
 const EdVantage = lazy(() => import('./pages/EdVantage'))
 const Updates = lazy(() => import('./pages/Updates'))
+
+// Component that uses prefetch hook
+const AppContent = ({ mousePos }) => {
+  usePrefetch();
+
+  return (
+    <div className="relative min-h-screen bg-[#0a0a0a] overflow-hidden">
+      <div 
+        className="cursor-glow"
+        style={{
+          left: mousePos.x,
+          top: mousePos.y,
+        }}
+      />
+      <div className="relative z-10">
+        <Navbar />
+        <main className="min-h-screen">
+          <Suspense fallback={<Loader message="Loading page..." showTips={true} />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/research" element={<Research />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/teams" element={<Teams />} />
+              <Route path="/edvantage" element={<EdVantage />} />
+              <Route path="/updates" element={<Updates />} />
+            </Routes>
+          </Suspense>
+        </main>
+        <Footer />
+      </div>
+    </div>
+  );
+};
 
 function App() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
@@ -73,33 +109,7 @@ function App() {
   return (
     <DataProvider>
       <BrowserRouter basename="/metsoc">
-        <div className="relative min-h-screen bg-[#0a0a0a] overflow-hidden">
-          <div 
-            className="cursor-glow"
-            style={{
-              left: mousePos.x,
-              top: mousePos.y,
-            }}
-          />
-          <div className="relative z-10"> {/* Content wrapper */}
-            <Navbar />
-            <main className="min-h-screen">
-              <Suspense fallback={<Loader message="Loading page..." />}>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/events" element={<Events />} />
-                  <Route path="/research" element={<Research />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/teams" element={<Teams />} />
-                  <Route path="/edvantage" element={<EdVantage />} />
-                  <Route path="/updates" element={<Updates />} />
-                </Routes>
-              </Suspense>
-            </main>
-            <Footer />
-          </div>
-        </div>
+        <AppContent mousePos={mousePos} />
       </BrowserRouter>
     </DataProvider>
   )

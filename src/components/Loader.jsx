@@ -1,7 +1,41 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
-const Loader = ({ message = "Loading..." }) => {
+const tips = [
+  "MetSoc bridges academia and industry in metallurgy",
+  "We organize workshops, seminars, and technical events",
+  "Join us to explore cutting-edge research in materials science",
+  "Connect with leading professionals and researchers",
+  "Participate in hands-on workshops and competitions",
+  "Stay updated with the latest metallurgical innovations",
+  "Be part of India's premier metallurgy student chapter",
+  "Network with industry leaders and alumni"
+];
+
+const Loader = ({ message = "Loading...", showTips = true }) => {
+  const [currentTip, setCurrentTip] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    // Rotate tips every 3 seconds
+    if (showTips) {
+      const tipInterval = setInterval(() => {
+        setCurrentTip((prev) => (prev + 1) % tips.length);
+      }, 3000);
+      return () => clearInterval(tipInterval);
+    }
+  }, [showTips]);
+
+  useEffect(() => {
+    // Simulate progress
+    const progressInterval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 90) return prev;
+        return prev + Math.random() * 15;
+      });
+    }, 300);
+    return () => clearInterval(progressInterval);
+  }, []);
   return (
     <div className="min-h-screen pt-24 flex flex-col items-center justify-center">
       <div className="relative">
@@ -93,7 +127,7 @@ const Loader = ({ message = "Loading..." }) => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="mt-12 text-center"
+        className="mt-12 text-center max-w-md"
       >
         <motion.div 
           className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400 mb-3 font-bold text-xl"
@@ -108,6 +142,34 @@ const Loader = ({ message = "Loading..." }) => {
         >
           {message}
         </motion.div>
+        
+        {/* Progress bar */}
+        <div className="w-64 h-1 bg-slate-800 rounded-full overflow-hidden mb-6">
+          <motion.div
+            className="h-full bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500"
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+
+        {/* Rotating tips */}
+        {showTips && (
+          <div className="min-h-[60px] flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={currentTip}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                className="text-slate-400 text-sm px-4 text-center"
+              >
+                💡 {tips[currentTip]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+        )}
         <div className="text-slate-400 text-sm">Please wait while we fetch the latest data</div>
         
         {/* Loading dots */}

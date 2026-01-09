@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useSheetData } from '../hooks/useSheetData'
 import { SHEET_NAMES } from '../services/sheets'
 import Loader from '../components/Loader'
+import { ListSkeleton, EventCardSkeleton } from '../components/Skeleton'
 import useScrollToTop from '../hooks/useScrollToTop'
 
 // date formatter 
@@ -46,7 +47,17 @@ const Events = () => {
 
   // Updated loading state
   if (loading) {
-    return <Loader message="Loading events" />;
+    return (
+      <div className="min-h-screen pt-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-12 text-center">
+            <div className="h-12 w-48 mx-auto bg-slate-800/50 rounded-full mb-8 animate-pulse" />
+            <div className="h-16 w-96 mx-auto bg-slate-800/50 rounded mb-4 animate-pulse" />
+          </div>
+          <ListSkeleton count={6} CardComponent={EventCardSkeleton} />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
