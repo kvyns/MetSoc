@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const tips = [
-  "MetSoc bridges academia and industry in metallurgy",
-  "We organize workshops, seminars, and technical events",
-  "Join us to explore cutting-edge research in materials science",
-  "Connect with leading professionals and researchers",
-  "Participate in hands-on workshops and competitions",
-  "Stay updated with the latest metallurgical innovations",
-  "Be part of India's premier metallurgy student chapter",
-  "Network with industry leaders and alumni"
+  "Steel accounts for over 95% of all metal tonnage produced worldwide",
+  "Graphene is 200 times stronger than steel yet incredibly lightweight",
+  "Shape memory alloys can remember their original shape after deformation",
+  "Titanium alloys are biocompatible, making them ideal for medical implants",
+  "High-entropy alloys contain 5+ principal elements in equal proportions",
+  "Additive manufacturing enables complex metallic structures impossible with traditional methods",
+  "Corrosion costs the global economy over $2.5 trillion annually",
+  "Superalloys can maintain strength at temperatures exceeding 1000°C",
+  "Metallic glass has no crystalline structure, giving it unique properties",
+  "Aluminum's density is about one-third that of steel, perfect for aerospace"
 ];
 
 const Loader = ({ message = "Loading...", showTips = true }) => {
@@ -37,10 +39,10 @@ const Loader = ({ message = "Loading...", showTips = true }) => {
     return () => clearInterval(progressInterval);
   }, []);
   return (
-    <div className="min-h-screen pt-24 flex flex-col items-center justify-center">
-      <div className="relative">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#0a0a0a] z-50">
+      <div className="relative flex flex-col items-center">
         {/* Animated floating orbs */}
-        <div className="relative w-24 h-24">
+        <div className="relative w-24 h-24 mb-12">
           {/* Outer glow */}
           <motion.div
             className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 blur-xl"
@@ -127,10 +129,10 @@ const Loader = ({ message = "Loading...", showTips = true }) => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="mt-12 text-center max-w-md"
+        className="text-center max-w-md px-4"
       >
         <motion.div 
-          className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400 mb-3 font-bold text-xl"
+          className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400 mb-6 font-bold text-xl"
           animate={{
             opacity: [0.5, 1, 0.5],
           }}
@@ -144,7 +146,7 @@ const Loader = ({ message = "Loading...", showTips = true }) => {
         </motion.div>
         
         {/* Progress bar */}
-        <div className="w-64 h-1 bg-slate-800 rounded-full overflow-hidden mb-6">
+        <div className="w-64 h-1 bg-slate-800 rounded-full overflow-hidden mb-6 mx-auto">
           <motion.div
             className="h-full bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500"
             initial={{ width: 0 }}
@@ -155,7 +157,7 @@ const Loader = ({ message = "Loading...", showTips = true }) => {
 
         {/* Rotating tips */}
         {showTips && (
-          <div className="min-h-[60px] flex items-center justify-center">
+          <div className="min-h-[72px] flex items-center justify-center mb-4">
             <AnimatePresence mode="wait">
               <motion.p
                 key={currentTip}
@@ -163,17 +165,16 @@ const Loader = ({ message = "Loading...", showTips = true }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className="text-slate-400 text-sm px-4 text-center"
+                className="text-slate-300 text-sm px-4 text-center leading-relaxed"
               >
                 💡 {tips[currentTip]}
               </motion.p>
             </AnimatePresence>
           </div>
         )}
-        <div className="text-slate-400 text-sm">Please wait while we fetch the latest data</div>
         
         {/* Loading dots */}
-        <div className="flex gap-2 justify-center mt-4">
+        <div className="flex gap-2 justify-center">
           {[0, 1, 2].map((i) => (
             <motion.div
               key={i}
@@ -191,6 +192,7 @@ const Loader = ({ message = "Loading...", showTips = true }) => {
           ))}
         </div>
       </motion.div>
+      </div>
     </div>
   )
 }
